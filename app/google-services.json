@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "13229429360",
+    "project_id": "fred-cb3d3",
+    "storage_bucket": "fred-cb3d3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13229429360:android:5198e3519fa6cde6df5ab5",
+        "android_client_info": {
+          "package_name": "com.fred.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13229429360-eldru3tckcptomhho9bk15nkrlo10e4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fred.app",
+            "certificate_hash": "dfc75195060a189b5c338cd17454c10819b26cc5"
+          }
+        },
+        {
+          "client_id": "13229429360-p7ed39kab11rfs86k4cg005mpoa0bqlf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwrDdZmloYmhHrGZ_P2EESMEqqG-OdbmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13229429360-p7ed39kab11rfs86k4cg005mpoa0bqlf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
