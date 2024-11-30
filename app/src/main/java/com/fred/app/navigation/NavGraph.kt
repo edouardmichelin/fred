@@ -7,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.fred.app.presentation.create_chat.CreateChatScreen
 import com.fred.app.presentation.home.HomeScreen
 import com.fred.app.presentation.login.LoginScreen
 import com.fred.app.presentation.profile.ProfileScreen
@@ -70,9 +69,6 @@ fun NavGraph(startDestination: String = NavDirections.Splash.route) {
           }
           composable(NavDirections.Profile.route) {
             ProfileScreen(hiltViewModel(), navigateToBack = { navController.popBackStack() })
-          }
-          composable(NavDirections.CreateChat.route) {
-            CreateChatScreen(hiltViewModel(), navigateToBack = { navController.popBackStack() })
           }
         }
   }

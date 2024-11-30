@@ -3,6 +3,8 @@ package com.fred.app.domain.usecase
 import com.fred.app.base.Inputs
 import com.fred.app.base.UseCase
 import com.fred.app.data.repository.base.RegisterRepository
+import com.fred.app.data.repository.model.Gender
+import com.fred.app.data.repository.model.Location
 import com.fred.app.data.repository.model.User
 import com.fred.app.domain.sdk.AuthService
 import com.fred.app.util.State
@@ -24,7 +26,6 @@ constructor(
                 userId = it,
                 username = input?.username,
                 name = input?.name,
-                phone = input?.phone,
                 mail = input?.mail,
                 address = input?.address,
                 gender = input?.gender)) {
@@ -40,9 +41,8 @@ constructor(
   data class Input(
       val username: String? = null,
       val name: String? = null,
-      val phone: String? = null,
       val mail: String? = null,
-      val address: String? = null,
-      val gender: Boolean? = null,
+      val address: Location? = null,
+      val gender: Gender? = null,
   ) : Inputs
 }

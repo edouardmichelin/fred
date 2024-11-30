@@ -88,19 +88,6 @@ fun ProfileScreen(
 
               DefaultTextField(
                   modifier = Modifier.padding(vertical = 4.dp),
-                  value = state.phone,
-                  iconVector = Icons.Default.Phone,
-                  iconText = "phoneIcon",
-                  onValueChange = {
-                    viewModel.triggerEvent(ProfileViewModel.ViewEvent.SetPhone(it))
-                  },
-                  label = "Phone",
-                  placeholder = "Phone",
-                  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                  enabled = state.editMode)
-
-              DefaultTextField(
-                  modifier = Modifier.padding(vertical = 4.dp),
                   value = state.email,
                   iconVector = Icons.Default.Email,
                   iconText = "emailIcon",
@@ -111,7 +98,7 @@ fun ProfileScreen(
                   placeholder = "Email",
                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                   enabled = state.editMode)
-
+/*
               DefaultTextField(
                   modifier = Modifier.padding(vertical = 4.dp),
                   value = state.address,
@@ -123,6 +110,8 @@ fun ProfileScreen(
                   label = "Address",
                   placeholder = "Address",
                   enabled = state.editMode)
+
+ */
             }
       }
 }

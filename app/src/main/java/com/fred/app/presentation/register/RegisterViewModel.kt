@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.fred.app.base.BaseViewModel
 import com.fred.app.base.IViewEvent
 import com.fred.app.base.IViewState
+import com.fred.app.data.repository.model.Gender
+import com.fred.app.data.repository.model.Location
 import com.fred.app.domain.usecase.RegisterUseCase
 import com.fred.app.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,10 +26,9 @@ constructor(
               RegisterUseCase.Input(
                   username = state.username,
                   name = state.name,
-                  phone = state.phone,
                   mail = state.email,
                   address = state.address,
-                  gender = false,
+                  gender = Gender.Other,
               ))) {
         is State.Success -> {
           response.data
@@ -57,15 +58,6 @@ constructor(
         is ViewEvent.SetName -> {
           setState { state.copy(name = event.text) }
         }
-        is ViewEvent.SetPhone -> {
-          setState { state.copy(phone = event.text) }
-        }
-        is ViewEvent.SetNewsletterCheck -> {
-          setState { state.copy(newsletterCheck = event.status) }
-        }
-        is ViewEvent.SetTermsCheck -> {
-          setState { state.copy(termsCheck = event.status) }
-        }
       }
     }
   }
@@ -75,15 +67,9 @@ constructor(
 
     class SetName(val text: String) : ViewEvent()
 
-    class SetPhone(val text: String) : ViewEvent()
-
     class SetEmail(val text: String) : ViewEvent()
 
-    class SetAddress(val text: String) : ViewEvent()
-
-    class SetTermsCheck(val status: Boolean) : ViewEvent()
-
-    class SetNewsletterCheck(val status: Boolean) : ViewEvent()
+    class SetAddress(val text: Location) : ViewEvent()
 
     object Event : ViewEvent()
   }
@@ -91,11 +77,8 @@ constructor(
   data class ViewState(
       val username: String = "",
       val name: String = "",
-      val phone: String = "",
       val email: String = "",
-      val address: String = "",
-      val termsCheck: Boolean = false,
-      val newsletterCheck: Boolean = false,
+      val address: Location? = null,
       val isDisplay: Boolean = false,
       val isLoading: Boolean = false,
   ) : IViewState

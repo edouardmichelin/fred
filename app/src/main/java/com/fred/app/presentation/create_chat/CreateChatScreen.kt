@@ -1,5 +1,5 @@
 package com.fred.app.presentation.create_chat
-
+/*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -69,3 +69,6 @@ private fun BottomBar(viewModel: CreateChatViewModel) {
       text = "Create",
       click = { viewModel.triggerEvent(CreateChatViewModel.ViewEvent.CreateClicked) })
 }
+
+
+ */

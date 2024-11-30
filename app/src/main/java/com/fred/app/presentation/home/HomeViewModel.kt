@@ -6,7 +6,6 @@ import com.fred.app.base.BaseViewModel
 import com.fred.app.base.IViewEvent
 import com.fred.app.base.IViewState
 import com.fred.app.data.repository.model.Chat
-import com.fred.app.domain.usecase.GetChatsUseCase
 import com.fred.app.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,13 +15,13 @@ import kotlinx.coroutines.launch
 class HomeViewModel
 @Inject
 constructor(
-    private val getChatsUseCase: GetChatsUseCase,
+    //private val getChatsUseCase: GetChatsUseCase,
 ) : BaseViewModel<HomeViewModel.ViewState, HomeViewModel.ViewEvent>() {
 
   init {
-    getChats()
+    //getChats()
   }
-
+/*
   private fun getChats() {
     triggerEvent(ViewEvent.SetLoading(true))
     viewModelScope.launch {
@@ -38,6 +37,8 @@ constructor(
       }
     }
   }
+
+ */
 
   override fun createInitialState(): ViewState = ViewState()
 

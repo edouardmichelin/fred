@@ -1,5 +1,5 @@
 package com.fred.app.domain.usecase
-
+/*
 import com.fred.app.base.UseCase
 import com.fred.app.data.repository.base.ChatRepository
 import com.fred.app.data.repository.model.Chat
@@ -23,3 +23,5 @@ constructor(
     }
   }
 }
+
+ */

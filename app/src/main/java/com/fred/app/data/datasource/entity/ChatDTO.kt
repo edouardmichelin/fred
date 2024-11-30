@@ -1,5 +1,5 @@
 package com.fred.app.data.datasource.entity
-
+/*
 data class ChatDTO(
     val id: String? = null,
     val title: String? = null,
@@ -7,3 +7,5 @@ data class ChatDTO(
     val userId: String? = null,
     val date: Long? = null,
 )
+
+ */

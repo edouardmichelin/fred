@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.fred.app.base.BaseViewModel
 import com.fred.app.base.IViewEvent
 import com.fred.app.base.IViewState
+import com.fred.app.data.repository.model.Gender
+import com.fred.app.data.repository.model.Location
 import com.fred.app.data.repository.model.User
 import com.fred.app.domain.usecase.GetUserUseCase
 import com.fred.app.domain.usecase.RegisterUseCase
@@ -51,10 +53,9 @@ constructor(
               RegisterUseCase.Input(
                   username = state.username,
                   name = state.name,
-                  phone = state.phone,
                   mail = state.email,
                   address = state.address,
-                  gender = false,
+                  gender = Gender.Other,
               ))) {
         is State.Success -> {
           triggerEvent(ViewEvent.SetUser(response.data))
@@ -84,10 +85,9 @@ constructor(
                 isLoading = false,
                 username = event.user.username ?: "",
                 name = event.user.name ?: "",
-                phone = event.user.phone ?: "",
                 email = "",
-                address = event.user.address ?: "",
-                gender = event.user.gender ?: false)
+                address = event.user.address,
+                gender = event.user.gender ?: Gender.Other)
           }
         }
         is ViewEvent.SetName -> {
@@ -99,9 +99,6 @@ constructor(
         is ViewEvent.SetEmail -> {
           setState { state.copy(email = event.email) }
         }
-        is ViewEvent.SetPhone -> {
-          setState { state.copy(phone = event.phone) }
-        }
         is ViewEvent.SetUsername -> {
           setState { state.copy(username = event.username) }
         }
@@ -112,6 +109,7 @@ constructor(
         ViewEvent.EditClick -> {
           setState { state.copy(editMode = true) }
         }
+
       }
     }
   }
@@ -129,11 +127,9 @@ constructor(
 
     class SetUsername(val username: String) : ViewEvent()
 
-    class SetPhone(val phone: String) : ViewEvent()
-
     class SetEmail(val email: String) : ViewEvent()
 
-    class SetAddress(val address: String) : ViewEvent()
+    class SetAddress(val address: Location?) : ViewEvent()
 
     object EditClick : ViewEvent()
 
@@ -145,12 +141,11 @@ constructor(
       val getUserError: String = "",
       val username: String = "",
       val name: String = "",
-      val phone: String = "",
       val email: String = "",
-      val address: String = "",
+      val address: Location? = null,
       val termsCheck: Boolean = false,
       val newsletterCheck: Boolean = false,
-      val gender: Boolean = false,
+      val gender: Gender = Gender.Other,
       val editMode: Boolean = false,
   ) : IViewState
 }

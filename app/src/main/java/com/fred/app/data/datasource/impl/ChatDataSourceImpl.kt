@@ -1,5 +1,5 @@
 package com.fred.app.data.datasource.impl
-
+/*
 import com.fred.app.data.datasource.base.ChatDataSource
 import com.fred.app.data.datasource.entity.ChatDTO
 import com.fred.app.util.ChatNotFoundException
@@ -55,3 +55,6 @@ constructor(
    firebaseFirestore.collection(CHATS).document(id).collection("id2").document().set(chat)
    val chatRef = firebaseFirestore.collection(CHATS).document(id).collection("id2").document().get().await()
 */
+
+
+ */

@@ -1,4 +1,5 @@
 package com.fred.app.data.repository.base
+/*
 
 import com.fred.app.data.repository.model.Chat
 import com.fred.app.util.State
@@ -16,3 +17,5 @@ interface ChatRepository {
 
   suspend fun getAllChats(): State<List<Chat>>
 }
+
+ */

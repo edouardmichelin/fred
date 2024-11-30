@@ -1,5 +1,5 @@
 package com.fred.app.data.datasource.entity
-
+/*
 data class UserDTO(
     val username: String? = null,
     val name: String? = null,
@@ -8,3 +8,5 @@ data class UserDTO(
     val address: String? = null,
     val gender: Boolean? = null,
 )
+
+ */

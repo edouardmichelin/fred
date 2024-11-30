@@ -1,5 +1,6 @@
 package com.fred.app.domain.usecase
 
+/*
 import com.fred.app.base.UseCase
 import com.fred.app.data.repository.base.CheckUserRepository
 import com.fred.app.util.State
@@ -12,3 +13,5 @@ constructor(
     TODO("Not yet implemented")
   }
 }
+
+ */

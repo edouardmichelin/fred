@@ -1,11 +1,9 @@
 package com.fred.app.di
 
-import com.fred.app.data.repository.base.ChatRepository
 import com.fred.app.data.repository.base.GetUserRepository
 import com.fred.app.data.repository.base.LoginRepository
 import com.fred.app.data.repository.base.RegisterRepository
 import com.fred.app.domain.sdk.AuthService
-import com.fred.app.domain.usecase.CreateChatUseCase
 import com.fred.app.domain.usecase.GetUserUseCase
 import com.fred.app.domain.usecase.LoginUseCase
 import com.fred.app.domain.usecase.RegisterUseCase
@@ -39,10 +37,4 @@ class UseCaseModule {
       getUserRepository: GetUserRepository,
   ) = GetUserUseCase(authService, getUserRepository)
 
-  @ViewModelScoped
-  @Provides
-  fun provideCreateChatUseCase(
-      authService: AuthService,
-      chatRepository: ChatRepository,
-  ) = CreateChatUseCase(authService, chatRepository)
 }

@@ -1,5 +1,6 @@
 package com.fred.app.domain.usecase
 
+/*
 import com.fred.app.base.Inputs
 import com.fred.app.base.UseCase
 import com.fred.app.data.repository.base.ChatRepository
@@ -40,3 +41,5 @@ constructor(
       val isAnonymous: Boolean = false,
   ) : Inputs
 }
+
+ */

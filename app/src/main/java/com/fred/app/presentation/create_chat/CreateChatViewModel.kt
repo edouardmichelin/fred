@@ -1,5 +1,5 @@
 package com.fred.app.presentation.create_chat
-
+/*
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.fred.app.base.BaseViewModel
@@ -89,3 +89,6 @@ constructor(
 enum class Create {
   CREATED,
 }
+
+
+ */

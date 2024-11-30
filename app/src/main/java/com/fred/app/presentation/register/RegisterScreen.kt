@@ -65,18 +65,6 @@ fun RegisterScreen(
                     placeholder = "Username",
                 )
 
-                DefaultTextField(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    value = state.phone,
-                    iconVector = Icons.Default.Phone,
-                    iconText = "phoneIcon",
-                    onValueChange = {
-                      viewModel.triggerEvent(RegisterViewModel.ViewEvent.SetPhone(it))
-                    },
-                    label = "Phone",
-                    placeholder = "Phone",
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                )
 
                 DefaultTextField(
                     modifier = Modifier.padding(vertical = 4.dp),
@@ -91,6 +79,7 @@ fun RegisterScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 )
 
+              /*
                 DefaultTextField(
                     modifier = Modifier.padding(vertical = 4.dp),
                     value = state.address,
@@ -103,10 +92,12 @@ fun RegisterScreen(
                     placeholder = "Address",
                 )
 
+               */
+
                 GenderSelection()
                 Spacer(modifier = Modifier.height(12.dp))
 
-                TermsAndConditionsSelection(state, viewModel)
+                // TermsAndConditionsSelection(state, viewModel)
               }
         }
       }
@@ -138,16 +129,14 @@ fun GenderSelection() {
   }
 }
 
+/*
 @Composable
 fun TermsAndConditionsSelection(
     state: RegisterViewModel.ViewState,
     viewModel: RegisterViewModel,
 ) {
   Row(verticalAlignment = Alignment.CenterVertically) {
-    Checkbox(
-        checked = state.termsCheck,
-        onCheckedChange = { viewModel.triggerEvent(RegisterViewModel.ViewEvent.SetTermsCheck(it)) })
-    Spacer(modifier = Modifier.width(4.dp))
+
     TextSecondary(text = "I agree with terms and conditions")
   }
   Spacer(modifier = Modifier.height(12.dp))
@@ -162,6 +151,8 @@ fun TermsAndConditionsSelection(
     TextSecondary(text = "I want to receive the newsletter")
   }
 }
+
+ */
 
 @Composable
 fun BottomBar(viewModel: RegisterViewModel) {

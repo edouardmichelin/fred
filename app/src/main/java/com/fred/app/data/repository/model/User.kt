@@ -1,7 +1,7 @@
 package com.fred.app.data.repository.model
 
 data class User(
-    val id: String,
+    val id: String = "",
     val username: String = "",
     val name: String = "",
     val mail: String = "",

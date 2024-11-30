@@ -1,5 +1,7 @@
 package com.fred.app.data.repository.base
 
+import com.fred.app.data.repository.model.Gender
+import com.fred.app.data.repository.model.Location
 import com.fred.app.data.repository.model.User
 import com.fred.app.util.State
 
@@ -9,9 +11,8 @@ interface RegisterRepository {
       userId: String,
       username: String?,
       name: String?,
-      phone: String?,
       mail: String?,
-      address: String?,
-      gender: Boolean?,
+      address: Location?,
+      gender: Gender?,
   ): State<User>
 }
