@@ -9,7 +9,7 @@ import com.fred.app.data.repository.model.Gender
 import com.fred.app.data.repository.model.Location
 import com.fred.app.data.repository.model.User
 import com.fred.app.domain.usecase.GetUserUseCase
-import com.fred.app.domain.usecase.RegisterUseCase
+import com.fred.app.domain.usecase.RegisterUserUseCase
 import com.fred.app.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -20,7 +20,7 @@ class ProfileViewModel
 @Inject
 constructor(
     private val getUserUseCase: GetUserUseCase,
-    private val registerUseCase: RegisterUseCase,
+    private val registerUseCase: RegisterUserUseCase,
 ) : BaseViewModel<ProfileViewModel.ViewState, ProfileViewModel.ViewEvent>() {
 
   override fun createInitialState(): ViewState = ViewState()
@@ -49,23 +49,6 @@ constructor(
   private fun updateUser() {
     triggerEvent(ViewEvent.SetLoading(true))
     viewModelScope.launch {
-      when (val response =
-          registerUseCase.execute(
-              RegisterUseCase.Input(
-                  username = state.username,
-                  name = state.name,
-                  mail = state.email,
-                  address = state.address,
-                  gender = Gender.Other,
-              ))) {
-        is State.Success -> {
-          triggerEvent(ViewEvent.SetUser(response.data))
-        }
-        is State.Error -> {
-          response.exception.message?.let { triggerEvent(ViewEvent.SetGetUserError(it)) }
-        }
-        is State.Loading -> {}
-      }
     }
   }
 

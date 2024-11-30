@@ -6,7 +6,7 @@ import com.fred.app.base.IViewEvent
 import com.fred.app.base.IViewState
 import com.fred.app.data.repository.model.Gender
 import com.fred.app.data.repository.model.Location
-import com.fred.app.domain.usecase.RegisterUseCase
+import com.fred.app.domain.usecase.RegisterUserUseCase
 import com.fred.app.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,28 +16,11 @@ import kotlinx.coroutines.launch
 class RegisterViewModel
 @Inject
 constructor(
-    private val registerUseCase: RegisterUseCase,
+    private val registerUseCase: RegisterUserUseCase,
 ) : BaseViewModel<RegisterViewModel.ViewState, RegisterViewModel.ViewEvent>() {
 
   fun temp() {
     viewModelScope.launch {
-      when (val response =
-          registerUseCase.execute(
-              RegisterUseCase.Input(
-                  username = state.username,
-                  name = state.name,
-                  mail = state.email,
-                  address = state.address,
-                  gender = Gender.Other,
-              ))) {
-        is State.Success -> {
-          response.data
-        }
-        is State.Error -> {
-          response.exception
-        }
-        is State.Loading -> {}
-      }
     }
   }
 

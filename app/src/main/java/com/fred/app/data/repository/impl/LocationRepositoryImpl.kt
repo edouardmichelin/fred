@@ -2,6 +2,7 @@ package com.fred.app.data.repository.impl
 
 import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.model.Location
+import com.fred.app.data.repository.model.LocationType
 import com.fred.app.util.Constants.Firestore.LOCATIONS
 import com.fred.app.util.State
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,7 +20,8 @@ class LocationRepositoryImpl @Inject constructor(
         name: String,
         latitude: Double,
         longitude: Double,
-        ownerId: String
+        ownerId: String,
+        locationType: LocationType
     ): Flow<State<Location>> = flow {
         emit(State.Loading)
 
@@ -30,7 +32,8 @@ class LocationRepositoryImpl @Inject constructor(
                 name = name,
                 latitude = latitude,
                 longitude = longitude,
-                ownerId = ownerId
+                ownerId = ownerId,
+                locationType = locationType
             )
 
             collection.document(id).set(location).await()

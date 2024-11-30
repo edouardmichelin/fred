@@ -5,7 +5,7 @@ data class User(
     val username: String = "",
     val name: String = "",
     val mail: String = "",
-    val avatarId: Int = 0,
+    val avatarId: String = "",
     val gender: Gender = Gender.Other,
     val address: Location? = null,
     val diet: Diet = Diet.Other,

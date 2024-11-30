@@ -4,7 +4,7 @@ import com.fred.app.data.repository.base.ActivityRepository
 import com.fred.app.data.repository.base.GetUserRepository
 import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.base.LoginRepository
-import com.fred.app.data.repository.base.RegisterRepository
+import com.fred.app.data.repository.base.RegisterUserRepository
 import com.fred.app.data.repository.base.VehicleRepository
 import com.fred.app.domain.sdk.AuthService
 import com.fred.app.domain.usecase.CreateActivityUseCase
@@ -15,7 +15,7 @@ import com.fred.app.domain.usecase.GetLocationsUseCase
 import com.fred.app.domain.usecase.GetUserUseCase
 import com.fred.app.domain.usecase.GetVehiclesUseCase
 import com.fred.app.domain.usecase.LoginUseCase
-import com.fred.app.domain.usecase.RegisterUseCase
+import com.fred.app.domain.usecase.RegisterUserUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,13 +31,6 @@ class UseCaseModule {
   fun provideLoginUseCase(
       loginRepository: LoginRepository,
   ) = LoginUseCase(loginRepository)
-
-  @ViewModelScoped
-  @Provides
-  fun provideRegisterUseCase(
-      authService: AuthService,
-      registerRepository: RegisterRepository,
-  ) = RegisterUseCase(authService, registerRepository)
 
     @ViewModelScoped
     @Provides
@@ -88,4 +81,10 @@ class UseCaseModule {
         vehicleRepository: VehicleRepository,
     ) = CreateVehicleUseCase(authService, vehicleRepository)
 
+    @ViewModelScoped
+    @Provides
+    fun provideRegisterUserUseCase(
+        authService: AuthService,
+        registerUserRepository: RegisterUserRepository,
+    ) = RegisterUserUseCase(authService, registerUserRepository)
 }

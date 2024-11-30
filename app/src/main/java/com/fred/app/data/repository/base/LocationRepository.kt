@@ -1,6 +1,7 @@
 package com.fred.app.data.repository.base
 
 import com.fred.app.data.repository.model.Location
+import com.fred.app.data.repository.model.LocationType
 import com.fred.app.util.State
 import kotlinx.coroutines.flow.Flow
 
@@ -9,7 +10,8 @@ interface LocationRepository {
         name: String,
         latitude: Double,
         longitude: Double,
-        ownerId: String
+        ownerId: String,
+        locationType: LocationType
     ): Flow<State<Location>>
 
     suspend fun getAllLocationsOf(userId: String): Flow<State<List<Location>>>
