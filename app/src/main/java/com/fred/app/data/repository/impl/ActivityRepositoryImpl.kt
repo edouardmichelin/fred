@@ -4,7 +4,6 @@ import com.fred.app.data.repository.base.ActivityRepository
 import com.fred.app.data.repository.model.Activity
 import com.fred.app.data.repository.model.ActivityType
 import com.fred.app.data.repository.model.Location
-import com.fred.app.data.repository.model.Vehicle
 import com.fred.app.util.Constants.Firestore.ACTIVITIES
 import com.fred.app.util.State
 import com.google.firebase.firestore.FirebaseFirestore
