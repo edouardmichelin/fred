@@ -9,5 +9,7 @@ object Constants {
   object Firestore {
     const val USERS = "users"
     const val ACTIVITIES = "activity"
+    const val LOCATIONS = "location"
+    const val VEHICLES = "vehicle"
   }
 }

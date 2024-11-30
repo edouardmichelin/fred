@@ -6,12 +6,18 @@ import com.fred.app.data.datasource.base.RegisterDataSource
 import com.fred.app.data.datasource.impl.GetUserDataSourceImpl
 import com.fred.app.data.datasource.impl.LoginDataSourceImpl
 import com.fred.app.data.datasource.impl.RegisterDataSourceImpl
+import com.fred.app.data.repository.base.ActivityRepository
 import com.fred.app.data.repository.base.GetUserRepository
+import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.base.LoginRepository
 import com.fred.app.data.repository.base.RegisterRepository
+import com.fred.app.data.repository.base.VehicleRepository
+import com.fred.app.data.repository.impl.ActivityRepositoryImpl
 import com.fred.app.data.repository.impl.GetUserRepositoryImpl
+import com.fred.app.data.repository.impl.LocationRepositoryImpl
 import com.fred.app.data.repository.impl.LoginRepositoryImpl
 import com.fred.app.data.repository.impl.RegisterRepositoryImpl
+import com.fred.app.data.repository.impl.VehicleRepositoryImpl
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
@@ -50,4 +56,18 @@ class RepositoryModule {
   ): GetUserRepository = GetUserRepositoryImpl(getUserDataSource)
 
 
+    @Provides
+    fun provideVehicleRepository(
+        db: FirebaseFirestore,
+    ): VehicleRepository = VehicleRepositoryImpl(db)
+
+    @Provides
+    fun provideLocationRepository(
+        db: FirebaseFirestore,
+    ): LocationRepository = LocationRepositoryImpl(db)
+
+    @Provides
+    fun provideActivityRepository(
+        db: FirebaseFirestore,
+    ): ActivityRepository = ActivityRepositoryImpl(db)
 }

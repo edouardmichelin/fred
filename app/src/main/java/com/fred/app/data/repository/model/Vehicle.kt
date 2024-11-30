@@ -1,6 +1,7 @@
 package com.fred.app.data.repository.model
 
 data class Vehicle(
+    val id: String = "",
     val type: VehicleType = VehicleType.Walk,
     val name: String = type.name,
     val fuelType: FuelType = FuelType.Muscle,

@@ -58,7 +58,7 @@ class ActivityRepositoryImpl @Inject constructor(
             val data = refs.toObjects(Activity::class.java)
 
             if (data.isNotEmpty()) emit(State.Success(data))
-            else State.Error(Exception("Could not find activity"))
+            else State.Success(listOf<Activity>())
         } catch (exception: Exception) {
             emit(State.Error(exception))
         }
