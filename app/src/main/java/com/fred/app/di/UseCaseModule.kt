@@ -1,10 +1,16 @@
 package com.fred.app.di
 
+import com.fred.app.data.repository.base.ActivityRepository
 import com.fred.app.data.repository.base.GetUserRepository
+import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.base.LoginRepository
 import com.fred.app.data.repository.base.RegisterRepository
+import com.fred.app.data.repository.base.VehicleRepository
 import com.fred.app.domain.sdk.AuthService
+import com.fred.app.domain.usecase.GetActivitiesUseCase
+import com.fred.app.domain.usecase.GetLocationsUseCase
 import com.fred.app.domain.usecase.GetUserUseCase
+import com.fred.app.domain.usecase.GetVehiclesUseCase
 import com.fred.app.domain.usecase.LoginUseCase
 import com.fred.app.domain.usecase.RegisterUseCase
 import dagger.Module
@@ -30,11 +36,32 @@ class UseCaseModule {
       registerRepository: RegisterRepository,
   ) = RegisterUseCase(authService, registerRepository)
 
-  @ViewModelScoped
-  @Provides
-  fun provideGetUserUseCase(
-      authService: AuthService,
-      getUserRepository: GetUserRepository,
-  ) = GetUserUseCase(authService, getUserRepository)
+    @ViewModelScoped
+    @Provides
+    fun provideGetUserUseCase(
+        authService: AuthService,
+        getUserRepository: GetUserRepository,
+    ) = GetUserUseCase(authService, getUserRepository)
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetActivitiesUseCase(
+        authService: AuthService,
+        activityRepository: ActivityRepository,
+    ) = GetActivitiesUseCase(authService, activityRepository)
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetLocationsUseCase(
+        authService: AuthService,
+        locationRepository: LocationRepository,
+    ) = GetLocationsUseCase(authService, locationRepository)
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetVehiclesUseCase(
+        authService: AuthService,
+        vehicleRepository: VehicleRepository,
+    ) = GetVehiclesUseCase(authService, vehicleRepository)
 
 }
