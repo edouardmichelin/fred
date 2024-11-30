@@ -6,5 +6,5 @@ data class Activity(
     val distance: Float = 0f,
     val timestamp: Long = System.currentTimeMillis(),
     val transportation: String = "",
-    val impact: Int
+    val impact: Int = 0
 )

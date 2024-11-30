@@ -1,10 +1,15 @@
 package com.fred.app.data.repository.model
 
 data class User(
-    val username: String? = null,
-    val name: String? = null,
-    val phone: String? = null,
-    val mail: String? = null,
-    val address: String? = null,
-    val gender: Boolean? = null,
+    val id: String,
+    val username: String = "",
+    val name: String = "",
+    val mail: String = "",
+    val avatarId: Int = 0,
+    val gender: Gender = Gender.Other,
+    val address: Location? = null,
+    val diet: Diet = Diet.Other,
+    val transportations: List<Vehicle> = listOf(),
+    val locations: List<Location> = listOf(),
+    val score: Int = 0
 )

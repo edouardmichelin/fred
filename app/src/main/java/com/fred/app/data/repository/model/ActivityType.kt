@@ -4,5 +4,6 @@ enum class ActivityType {
   None,
   Eat,
   Travel,
+  Commute,
   OnlineShopping
 }

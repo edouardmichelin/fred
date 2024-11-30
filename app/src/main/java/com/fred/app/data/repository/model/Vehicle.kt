@@ -1,0 +1,10 @@
+package com.fred.app.data.repository.model
+
+data class Vehicle(
+    val type: VehicleType = VehicleType.Walk,
+    val name: String = type.name,
+    val fuelType: FuelType = FuelType.Muscle,
+    val age: Int = 0,
+    val km: Int = 0,
+    val carbonFootprint: Double = 0.0
+)
