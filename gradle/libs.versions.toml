@@ -72,6 +72,7 @@ coil = "2.1.0"
 bouquet = "1.1.2"
 playServicesLocation = "21.3.0"
 uiTextGoogleFonts = "1.7.5"
+composeMaterial = "1.4.0"
 
 [libraries]
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanistNavigationAnimation" }
@@ -153,6 +154,7 @@ coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 bouquet = { group = "io.github.grizzi91", name = "bouquet", version.ref = "bouquet" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

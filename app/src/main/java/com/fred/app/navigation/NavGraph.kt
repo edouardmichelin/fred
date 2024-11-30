@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fred.app.presentation.home.HomeScreen
+import com.fred.app.presentation.onboarding.personal.PersonalScreen
 import com.fred.app.presentation.onboarding.splash.SplashScreen
 import com.fred.app.presentation.profile.ProfileScreen
 import com.fred.app.ui.component.DefaultScaffold
@@ -31,10 +32,12 @@ fun NavGraph(startDestination: String = NavDirections.Splash.route) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    var onBoardingFinished = false // Replace with your logic
+
     DefaultScaffold(
         bottomBar = {
             // Show the BottomNavigationBar only if not on the Splash screen
-            if (currentRoute != NavDirections.Splash.route) {
+            if (onBoardingFinished) {
                 BottomNavigationBar(navController)
             }
         },
@@ -46,6 +49,11 @@ fun NavGraph(startDestination: String = NavDirections.Splash.route) {
         ) {
             composable(NavDirections.Splash.route) {
                 SplashScreen(navController)
+            }
+
+            composable(NavDirections.Personal.route) {
+                onBoardingFinished = true
+                PersonalScreen(navController, { _, _, _, _, _-> run {}})
             }
 
             composable(NavDirections.Home.route) {

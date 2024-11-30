@@ -113,6 +113,7 @@ dependencies {
     implementation(libs.androidx.navigation.testing)
     implementation(libs.play.services.location)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.compose.material)
     testImplementation(libs.junit)
     globalTestImplementation(libs.androidx.junit)
     globalTestImplementation(libs.androidx.espresso.core)
