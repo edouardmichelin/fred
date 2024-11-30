@@ -257,7 +257,7 @@ fun TransportationSurveyScreen(
                         flightDistance = flightDistance
                     )
                     onSubmit(data)
-                    navController.navigate("home")
+                    navController.navigate("energy")
                 },
                 modifier = Modifier
                     .fillMaxWidth()

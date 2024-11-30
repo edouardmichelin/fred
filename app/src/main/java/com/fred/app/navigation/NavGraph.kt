@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fred.app.presentation.home.HomeScreen
+import com.fred.app.presentation.onboarding.energy.EnergyOnboardingScreen
 import com.fred.app.presentation.onboarding.personal.PersonalScreen
 import com.fred.app.presentation.onboarding.splash.SplashScreen
 import com.fred.app.presentation.onboarding.transports.TransportationSurveyScreen
@@ -58,8 +59,11 @@ fun NavGraph(startDestination: String = NavDirections.Splash.route) {
             }
 
             composable(NavDirections.Transports.route) {
-                onBoardingFinished = true
                 TransportationSurveyScreen(onSubmit = { }, navController)
+            }
+
+            composable(NavDirections.Energy.route) {
+                EnergyOnboardingScreen(onSubmit = {}, navController)
             }
 
             composable(NavDirections.Home.route) {

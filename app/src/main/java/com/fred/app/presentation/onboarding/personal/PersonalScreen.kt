@@ -47,7 +47,7 @@ fun PersonalScreen(
     var age by remember { mutableStateOf("") }
     var selectedGender by remember { mutableStateOf<Gender?>(null) }
 
-    val genderOptions = Gender.values().toList() // List of gender options from enum
+    val genderOptions = Gender.values().toList()
 
     Box(
         modifier = Modifier
@@ -60,7 +60,6 @@ fun PersonalScreen(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Title with Image and Text
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
