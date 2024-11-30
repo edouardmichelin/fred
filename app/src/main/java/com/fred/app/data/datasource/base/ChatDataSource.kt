@@ -5,15 +5,15 @@ import com.fred.app.util.State
 
 interface ChatDataSource {
 
-    suspend fun createChat(
-        id: String,
-        title: String,
-        description: String,
-        userId: String,
-        date: Long,
-    ): State<ChatDTO>
+  suspend fun createChat(
+      id: String,
+      title: String,
+      description: String,
+      userId: String,
+      date: Long,
+  ): State<ChatDTO>
 
-    suspend fun getChat(): State<Any>
+  suspend fun getChat(): State<Any>
 
-    suspend fun getAllChats(): State<List<ChatDTO>>
+  suspend fun getAllChats(): State<List<ChatDTO>>
 }

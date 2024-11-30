@@ -5,5 +5,5 @@ import com.fred.app.util.State
 
 interface GetUserRepository {
 
-    suspend fun getUserById(userId: String): State<User>
+  suspend fun getUserById(userId: String): State<User>
 }

@@ -7,9 +7,9 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class FredApp : Application() {
 
-    val isDark = mutableStateOf(false)
+  val isDark = mutableStateOf(false)
 
-    fun toggleTheme() {
-        isDark.value = !isDark.value
-    }
+  fun toggleTheme() {
+    isDark.value = !isDark.value
+  }
 }

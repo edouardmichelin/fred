@@ -23,30 +23,14 @@ fun DefaultTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     onValueChange: (String) -> Unit,
 ) {
-    OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
-        value = value,
-        singleLine = singleLine,
-        keyboardOptions = keyboardOptions,
-        leadingIcon = {
-            iconVector?.let {
-                Icon(
-                    imageVector = it,
-                    contentDescription = iconText
-                )
-            }
-        },
-        onValueChange =  onValueChange,
-        label = {
-            label?.let {
-                Text(text = it)
-            }
-        },
-        placeholder = {
-            placeholder?.let {
-                Text(text = placeholder)
-            }
-        },
-        enabled = enabled
-    )
+  OutlinedTextField(
+      modifier = modifier.fillMaxWidth(),
+      value = value,
+      singleLine = singleLine,
+      keyboardOptions = keyboardOptions,
+      leadingIcon = { iconVector?.let { Icon(imageVector = it, contentDescription = iconText) } },
+      onValueChange = onValueChange,
+      label = { label?.let { Text(text = it) } },
+      placeholder = { placeholder?.let { Text(text = placeholder) } },
+      enabled = enabled)
 }

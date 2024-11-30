@@ -8,37 +8,32 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<State : IViewState, Event : IViewEvent> : ViewModel() {
 
-    private val initialState: State by lazy { createInitialState() }
-    abstract fun createInitialState(): State
+  private val initialState: State by lazy { createInitialState() }
 
-    val state: State get() = uiState.value
+  abstract fun createInitialState(): State
 
-    abstract fun triggerEvent(event: Event)
+  val state: State
+    get() = uiState.value
 
-    private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
-    val uiState: StateFlow<State> = _uiState
+  abstract fun triggerEvent(event: Event)
 
-    private val _uiEvent: MutableSharedFlow<Event> = MutableSharedFlow()
-    val uiEvent = _uiEvent.asSharedFlow()
+  private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
+  val uiState: StateFlow<State> = _uiState
 
-    protected fun setState(reduce: State.() -> State) {
-        val newState = state.reduce()
-        _uiState.value = newState
-        Log.d("TAG", "$newState")
-    }
+  private val _uiEvent: MutableSharedFlow<Event> = MutableSharedFlow()
+  val uiEvent = _uiEvent.asSharedFlow()
 
-    protected fun setEvent(event: Event) {
-        viewModelScope.launch { _uiEvent.emit(event) }
-    }
+  protected fun setState(reduce: State.() -> State) {
+    val newState = state.reduce()
+    _uiState.value = newState
+    Log.d("TAG", "$newState")
+  }
 
-    protected suspend fun <T> call(
-        callFlow: Flow<T>,
-        completionHandler: (collect: T) -> Unit = {}
-    ) {
-        callFlow
-            .catch { }
-            .collect {
-                completionHandler.invoke(it)
-            }
-    }
+  protected fun setEvent(event: Event) {
+    viewModelScope.launch { _uiEvent.emit(event) }
+  }
+
+  protected suspend fun <T> call(callFlow: Flow<T>, completionHandler: (collect: T) -> Unit = {}) {
+    callFlow.catch {}.collect { completionHandler.invoke(it) }
+  }
 }

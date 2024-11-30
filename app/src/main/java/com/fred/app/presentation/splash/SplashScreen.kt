@@ -14,13 +14,12 @@ fun SplashScreen(
     navigateToLogin: () -> Unit,
     navigateToHome: () -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsState()
 
-    val authState = state.authState
-    if (authState == AuthenticationState.AUTHENTICATED) {
-        NavigateTo(navigateToHome)
-    } else if (authState == AuthenticationState.UNAUTHENTICATED) {
-        NavigateTo(navigateToLogin)
-    }
-
+  val authState = state.authState
+  if (authState == AuthenticationState.AUTHENTICATED) {
+    NavigateTo(navigateToHome)
+  } else if (authState == AuthenticationState.UNAUTHENTICATED) {
+    NavigateTo(navigateToLogin)
+  }
 }

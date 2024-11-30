@@ -16,21 +16,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ButtonDefault(
-    text: String,
-    click: () -> Unit = {}
-) {
-    Button(
-        onClick = click,
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-    ) {
-        TextSecondary(
-            text = text,
-            color = Color.White
-        )
-    }
+fun ButtonDefault(text: String, click: () -> Unit = {}) {
+  Button(onClick = click, modifier = Modifier.padding(4.dp).fillMaxWidth()) {
+    TextSecondary(text = text, color = Color.White)
+  }
 }
 
 @Composable
@@ -41,85 +30,51 @@ fun ButtonWithBorder(
     backgroundColor: Color = Color.White,
     click: () -> Unit = {}
 ) {
-    Button(
-        onClick = click,
-        border = BorderStroke(1.dp, borderColor),
-        colors = ButtonDefaults.outlinedButtonColors(
-            //contentColor = borderColor,
-            //backgroundColor = backgroundColor
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        TextSecondary(
-            text = text,
-            color = textColor
-        )
-    }
+  Button(
+      onClick = click,
+      border = BorderStroke(1.dp, borderColor),
+      colors =
+          ButtonDefaults.outlinedButtonColors(
+              // contentColor = borderColor,
+              // backgroundColor = backgroundColor
+              ),
+      modifier = Modifier.fillMaxWidth()) {
+        TextSecondary(text = text, color = textColor)
+      }
 }
 
 @Composable
-fun ButtonWithRoundCornerShape(
-    text: String,
-    click: () -> Unit = {}
-) {
-    Button(
-        onClick = click,
-        shape = RoundedCornerShape(20.dp),
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-    ) {
-        TextSecondary(
-            text = text
-        )
-    }
+fun ButtonWithRoundCornerShape(text: String, click: () -> Unit = {}) {
+  Button(
+      onClick = click,
+      shape = RoundedCornerShape(20.dp),
+      modifier = Modifier.padding(4.dp).fillMaxWidth()) {
+        TextSecondary(text = text)
+      }
 }
 
 @Composable
-fun ButtonWithIcon(
-    text: String,
-    iconRes: Int,
-    contentDescription: String,
-    click: () -> Unit = {}
-) {
-    Button(
-        onClick = click,
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-    ) {
-        Image(
-            painterResource(id = iconRes),
-            contentDescription = contentDescription,
-            modifier = Modifier.size(24.dp)
-        )
+fun ButtonWithIcon(text: String, iconRes: Int, contentDescription: String, click: () -> Unit = {}) {
+  Button(onClick = click, modifier = Modifier.padding(4.dp).fillMaxWidth()) {
+    Image(
+        painterResource(id = iconRes),
+        contentDescription = contentDescription,
+        modifier = Modifier.size(24.dp))
 
-        TextSecondary(
-            text = text,
-            modifier = Modifier.padding(6.dp)
-        )
-    }
+    TextSecondary(text = text, modifier = Modifier.padding(6.dp))
+  }
 }
 
 @Composable
-fun ButtonWithElevation(
-    text: String,
-    click: () -> Unit = {}
-) {
-    Button(
-        onClick = click,
-        //elevation = ButtonDefaults.elevation(
-        //    defaultElevation = 10.dp,
-        //    pressedElevation = 15.dp,
-        //    disabledElevation = 0.dp
-        //),
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-    ) {
-        TextSecondary(
-            text = text
-        )
-    }
+fun ButtonWithElevation(text: String, click: () -> Unit = {}) {
+  Button(
+      onClick = click,
+      // elevation = ButtonDefaults.elevation(
+      //    defaultElevation = 10.dp,
+      //    pressedElevation = 15.dp,
+      //    disabledElevation = 0.dp
+      // ),
+      modifier = Modifier.padding(4.dp).fillMaxWidth()) {
+        TextSecondary(text = text)
+      }
 }

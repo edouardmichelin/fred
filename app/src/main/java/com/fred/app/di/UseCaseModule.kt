@@ -19,30 +19,30 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @InstallIn(ViewModelComponent::class)
 class UseCaseModule {
 
-    @ViewModelScoped
-    @Provides
-    fun provideLoginUseCase(
-        loginRepository: LoginRepository,
-    ) = LoginUseCase(loginRepository)
+  @ViewModelScoped
+  @Provides
+  fun provideLoginUseCase(
+      loginRepository: LoginRepository,
+  ) = LoginUseCase(loginRepository)
 
-    @ViewModelScoped
-    @Provides
-    fun provideRegisterUseCase(
-        authService: AuthService,
-        registerRepository: RegisterRepository,
-    ) = RegisterUseCase(authService, registerRepository)
+  @ViewModelScoped
+  @Provides
+  fun provideRegisterUseCase(
+      authService: AuthService,
+      registerRepository: RegisterRepository,
+  ) = RegisterUseCase(authService, registerRepository)
 
-    @ViewModelScoped
-    @Provides
-    fun provideGetUserUseCase(
-        authService: AuthService,
-        getUserRepository: GetUserRepository,
-    ) = GetUserUseCase(authService, getUserRepository)
+  @ViewModelScoped
+  @Provides
+  fun provideGetUserUseCase(
+      authService: AuthService,
+      getUserRepository: GetUserRepository,
+  ) = GetUserUseCase(authService, getUserRepository)
 
-    @ViewModelScoped
-    @Provides
-    fun provideCreateChatUseCase(
-        authService: AuthService,
-        chatRepository: ChatRepository,
-    ) = CreateChatUseCase(authService, chatRepository)
+  @ViewModelScoped
+  @Provides
+  fun provideCreateChatUseCase(
+      authService: AuthService,
+      chatRepository: ChatRepository,
+  ) = CreateChatUseCase(authService, chatRepository)
 }

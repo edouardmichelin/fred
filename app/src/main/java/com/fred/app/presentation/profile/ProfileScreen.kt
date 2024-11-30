@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,115 +27,102 @@ fun ProfileScreen(
     viewModel: ProfileViewModel,
     navigateToBack: () -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsState()
 
-    val snackbarHostState = remember { SnackbarHostState() }
-    LaunchedEffect(key1 = state.getUserError) {
-        launch {
-            if (state.getUserError.isNotEmpty())
-                snackbarHostState.showSnackbar(state.getUserError)
-        }
+  val snackbarHostState = remember { SnackbarHostState() }
+  LaunchedEffect(key1 = state.getUserError) {
+    launch {
+      if (state.getUserError.isNotEmpty()) snackbarHostState.showSnackbar(state.getUserError)
     }
+  }
 
-
-    //Prepare header end icon
-    val endIcon = if (state.editMode) {
+  // Prepare header end icon
+  val endIcon =
+      if (state.editMode) {
         R.drawable.ic_baseline_check_24
-    } else {
+      } else {
         R.drawable.ic_baseline_edit_24
-    }
+      }
 
-    DefaultScaffold(
-        topBar = {
-            ToolbarWithEndIcon(
-                title = "Profile",
-                onBackPressClick = navigateToBack,
-                endIconRes = endIcon,
-                endIconClick = {
-                    if (state.editMode) {
-                        viewModel.triggerEvent(ProfileViewModel.ViewEvent.ApplyClick)
-                    } else {
-                        viewModel.triggerEvent(ProfileViewModel.ViewEvent.EditClick)
-                    }
-                }
-            )
-        },
-        snackbarHostState = snackbarHostState
-
-    ) { padding ->
-        Column(modifier = Modifier
-            .padding(4.dp)
-            .padding(padding)
-            .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            DefaultTextField(
-                modifier = Modifier.padding(vertical = 4.dp),
-                value = state.name,
-                iconVector = Icons.Default.Person,
-                iconText = "personIcon",
-                onValueChange = {
+  DefaultScaffold(
+      topBar = {
+        ToolbarWithEndIcon(
+            title = "Profile",
+            onBackPressClick = navigateToBack,
+            endIconRes = endIcon,
+            endIconClick = {
+              if (state.editMode) {
+                viewModel.triggerEvent(ProfileViewModel.ViewEvent.ApplyClick)
+              } else {
+                viewModel.triggerEvent(ProfileViewModel.ViewEvent.EditClick)
+              }
+            })
+      },
+      snackbarHostState = snackbarHostState) { padding ->
+        Column(
+            modifier = Modifier.padding(4.dp).padding(padding).fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+              DefaultTextField(
+                  modifier = Modifier.padding(vertical = 4.dp),
+                  value = state.name,
+                  iconVector = Icons.Default.Person,
+                  iconText = "personIcon",
+                  onValueChange = {
                     viewModel.triggerEvent(ProfileViewModel.ViewEvent.SetName(it))
-                },
-                label = "Name",
-                placeholder = "Name",
-                enabled = state.editMode
-            )
+                  },
+                  label = "Name",
+                  placeholder = "Name",
+                  enabled = state.editMode)
 
-            DefaultTextField(
-                modifier = Modifier.padding(vertical = 4.dp),
-                value = state.username,
-                iconVector = Icons.Default.Person,
-                iconText = "personIcon",
-                onValueChange = {
+              DefaultTextField(
+                  modifier = Modifier.padding(vertical = 4.dp),
+                  value = state.username,
+                  iconVector = Icons.Default.Person,
+                  iconText = "personIcon",
+                  onValueChange = {
                     viewModel.triggerEvent(ProfileViewModel.ViewEvent.SetUsername(it))
-                },
-                label = "Username",
-                placeholder = "Username",
-                enabled = state.editMode
-            )
+                  },
+                  label = "Username",
+                  placeholder = "Username",
+                  enabled = state.editMode)
 
-            DefaultTextField(
-                modifier = Modifier.padding(vertical = 4.dp),
-                value = state.phone,
-                iconVector = Icons.Default.Phone,
-                iconText = "phoneIcon",
-                onValueChange = {
+              DefaultTextField(
+                  modifier = Modifier.padding(vertical = 4.dp),
+                  value = state.phone,
+                  iconVector = Icons.Default.Phone,
+                  iconText = "phoneIcon",
+                  onValueChange = {
                     viewModel.triggerEvent(ProfileViewModel.ViewEvent.SetPhone(it))
-                },
-                label = "Phone",
-                placeholder = "Phone",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                enabled = state.editMode
-            )
+                  },
+                  label = "Phone",
+                  placeholder = "Phone",
+                  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                  enabled = state.editMode)
 
-            DefaultTextField(
-                modifier = Modifier.padding(vertical = 4.dp),
-                value = state.email,
-                iconVector = Icons.Default.Email,
-                iconText = "emailIcon",
-                onValueChange = {
+              DefaultTextField(
+                  modifier = Modifier.padding(vertical = 4.dp),
+                  value = state.email,
+                  iconVector = Icons.Default.Email,
+                  iconText = "emailIcon",
+                  onValueChange = {
                     viewModel.triggerEvent(ProfileViewModel.ViewEvent.SetEmail(it))
-                },
-                label = "Email",
-                placeholder = "Email",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                enabled = state.editMode
-            )
+                  },
+                  label = "Email",
+                  placeholder = "Email",
+                  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                  enabled = state.editMode)
 
-            DefaultTextField(
-                modifier = Modifier.padding(vertical = 4.dp),
-                value = state.address,
-                iconVector = Icons.Default.Home,
-                iconText = "homeIcon",
-                onValueChange = {
+              DefaultTextField(
+                  modifier = Modifier.padding(vertical = 4.dp),
+                  value = state.address,
+                  iconVector = Icons.Default.Home,
+                  iconText = "homeIcon",
+                  onValueChange = {
                     viewModel.triggerEvent(ProfileViewModel.ViewEvent.SetAddress(it))
-                },
-                label = "Address",
-                placeholder = "Address",
-                enabled = state.editMode
-            )
-        }
-    }
-
+                  },
+                  label = "Address",
+                  placeholder = "Address",
+                  enabled = state.editMode)
+            }
+      }
 }

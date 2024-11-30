@@ -5,6 +5,5 @@ import com.fred.app.util.State
 
 interface GetUserDataSource {
 
-    suspend fun getUserById(userId: String): State<UserDTO>
-
+  suspend fun getUserById(userId: String): State<UserDTO>
 }

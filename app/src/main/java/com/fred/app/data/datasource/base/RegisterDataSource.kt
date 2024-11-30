@@ -5,13 +5,13 @@ import com.fred.app.util.State
 
 interface RegisterDataSource {
 
-    suspend fun register(
-        userId: String,
-        username: String?,
-        name: String?,
-        phone: String?,
-        mail: String?,
-        address: String?,
-        gender: Boolean?,
-    ): State<UserDTO>
+  suspend fun register(
+      userId: String,
+      username: String?,
+      name: String?,
+      phone: String?,
+      mail: String?,
+      address: String?,
+      gender: Boolean?,
+  ): State<UserDTO>
 }

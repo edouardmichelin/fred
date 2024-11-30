@@ -25,44 +25,39 @@ fun HomeScreen(
     navigateToProfile: () -> Unit,
     navigateToCreateChat: () -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsState()
 
-    BackHandler(onBack = {
+  BackHandler(
+      onBack = {
         // TODO:
-    })
+      })
 
-    DefaultScaffold(topBar = { HomeTopBar(navigateToProfile) },
-        bottomBar = {
-            ButtonWithBorder(
-                text = "Create New Chat",
-                textColor = Color.White,
-                borderColor = MaterialTheme.colorScheme.primaryContainer,
-                backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                click = { navigateToCreateChat() }
-            )
-        },
-        loading = state.isLoading) {
+  DefaultScaffold(
+      topBar = { HomeTopBar(navigateToProfile) },
+      bottomBar = {
+        ButtonWithBorder(
+            text = "Create New Chat",
+            textColor = Color.White,
+            borderColor = MaterialTheme.colorScheme.primaryContainer,
+            backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            click = { navigateToCreateChat() })
+      },
+      loading = state.isLoading) {
         Column() {
-            LazyColumn(modifier = Modifier.padding(horizontal = 4.dp)) {
-                items(items = state.chats) {
-                    RenderItem(it)
-                }
-            }
+          LazyColumn(modifier = Modifier.padding(horizontal = 4.dp)) {
+            items(items = state.chats) { RenderItem(it) }
+          }
         }
-    }
+      }
 }
 
 @Composable
 private fun HomeTopBar(endIconClick: () -> Unit) {
-    ToolbarWithEndIcon(
-        title = "Home",
-        endIconRes = R.drawable.ic_baseline_person_24,
-        endIconClick = endIconClick
-    )
+  ToolbarWithEndIcon(
+      title = "Home", endIconRes = R.drawable.ic_baseline_person_24, endIconClick = endIconClick)
 }
 
 @Composable
 private fun RenderItem(chat: Chat) {
-    Text(text = chat.title ?: "")
-
+  Text(text = chat.title ?: "")
 }

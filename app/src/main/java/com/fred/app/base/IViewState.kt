@@ -1,4 +1,3 @@
 package com.fred.app.base
 
-interface IViewState {
-}
+interface IViewState {}

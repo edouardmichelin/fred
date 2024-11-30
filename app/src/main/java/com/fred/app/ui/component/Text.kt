@@ -22,16 +22,15 @@ fun TextDefault(
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE
 ) {
-    Text(
-        text = text,
-        modifier = modifier,
-        style = style,
-        color = color,
-        fontSize = fontSize,
-        fontWeight = fontWeight,
-        maxLines = maxLines,
-        textAlign = textAlign
-    )
+  Text(
+      text = text,
+      modifier = modifier,
+      style = style,
+      color = color,
+      fontSize = fontSize,
+      fontWeight = fontWeight,
+      maxLines = maxLines,
+      textAlign = textAlign)
 }
 
 @Composable
@@ -45,16 +44,15 @@ fun TextSecondary(
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE
 ) {
-    Text(
-        text = text,
-        modifier = modifier,
-        style = style,
-        color = color,
-        fontSize = fontSize,
-        fontWeight = fontWeight,
-        maxLines = maxLines,
-        textAlign = textAlign
-    )
+  Text(
+      text = text,
+      modifier = modifier,
+      style = style,
+      color = color,
+      fontSize = fontSize,
+      fontWeight = fontWeight,
+      maxLines = maxLines,
+      textAlign = textAlign)
 }
 
 @Composable
@@ -68,14 +66,13 @@ fun TextTiny(
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE
 ) {
-    Text(
-        text = text,
-        modifier = modifier,
-        style = style,
-        color = color,
-        fontSize = fontSize,
-        fontWeight = fontWeight,
-        maxLines = maxLines,
-        textAlign = textAlign
-    )
+  Text(
+      text = text,
+      modifier = modifier,
+      style = style,
+      color = color,
+      fontSize = fontSize,
+      fontWeight = fontWeight,
+      maxLines = maxLines,
+      textAlign = textAlign)
 }
