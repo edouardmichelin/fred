@@ -8,9 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fred.app.presentation.home.HomeScreen
-import com.fred.app.presentation.login.LoginScreen
 import com.fred.app.presentation.profile.ProfileScreen
-import com.fred.app.presentation.register.RegisterScreen
 import com.fred.app.presentation.splash.SplashScreen
 import com.fred.app.ui.component.DefaultScaffold
 import com.fred.app.util.navigate
@@ -20,7 +18,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun NavGraph(startDestination: String = NavDirections.Splash.route) {
+fun NavGraph(startDestination: String = NavDirections.Home.route) {
   val navController = rememberAnimatedNavController()
   val navBackStackEntry by navController.currentBackStackEntryAsState()
   val currentRoute = navBackStackEntry?.destination?.route
@@ -44,28 +42,13 @@ fun NavGraph(startDestination: String = NavDirections.Splash.route) {
                       route = NavDirections.Login.route, popUpTo = NavDirections.Splash.route)
                 })
           }
-          composable(NavDirections.Login.route) {
-            LoginScreen(
-                hiltViewModel(),
-                navigateToRegister = {
-                  navController.navigate(
-                      route = NavDirections.Register.route, popUpTo = NavDirections.Register.route)
-                },
-                navigateToHome = {
-                  navController.navigate(
-                      route = NavDirections.Home.route, popUpTo = NavDirections.Register.route)
-                })
-          }
-          composable(NavDirections.Register.route) {
-            RegisterScreen(hiltViewModel(), navigateToBack = { navController.popBackStack() })
-          }
+
+
           composable(NavDirections.Home.route) {
             HomeScreen(
                 hiltViewModel(),
                 navigateToProfile = { navController.navigate(route = NavDirections.Profile.route) },
-                navigateToCreateChat = {
-                  navController.navigate(route = NavDirections.CreateChat.route)
-                })
+               )
           }
           composable(NavDirections.Profile.route) {
             ProfileScreen(hiltViewModel(), navigateToBack = { navController.popBackStack() })
