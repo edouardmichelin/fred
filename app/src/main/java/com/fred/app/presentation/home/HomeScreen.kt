@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,7 +18,6 @@ import com.fred.app.data.repository.model.Chat
 import com.fred.app.ui.component.ButtonWithBorder
 import com.fred.app.ui.component.DefaultScaffold
 import com.fred.app.ui.component.ToolbarWithEndIcon
-import com.fred.app.ui.theme.Purple200
 
 @Composable
 fun HomeScreen(
@@ -36,8 +36,8 @@ fun HomeScreen(
             ButtonWithBorder(
                 text = "Create New Chat",
                 textColor = Color.White,
-                borderColor = Purple200,
-                backgroundColor = Purple200,
+                borderColor = MaterialTheme.colorScheme.primaryContainer,
+                backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 click = { navigateToCreateChat() }
             )
         },

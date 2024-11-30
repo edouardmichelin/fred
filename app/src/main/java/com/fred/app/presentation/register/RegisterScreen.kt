@@ -22,7 +22,6 @@ import com.fred.app.ui.component.ButtonWithBorder
 import com.fred.app.ui.component.DefaultTextField
 import com.fred.app.ui.component.DefaultToolbar
 import com.fred.app.ui.component.TextSecondary
-import com.fred.app.ui.theme.Purple200
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -198,8 +197,8 @@ fun BottomBar(viewModel: RegisterViewModel) {
         ButtonWithBorder(
             text = "Register",
             textColor = Color.White,
-            borderColor = Purple200,
-            backgroundColor = Purple200,
+            borderColor = MaterialTheme.colorScheme.primaryContainer,
+            backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer,
             click = { viewModel.temp() }
         )
     }

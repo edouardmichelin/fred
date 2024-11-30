@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.fred.app.ui.theme.Purple200
 
 @Composable
 fun ButtonDefault(
@@ -36,8 +36,8 @@ fun ButtonDefault(
 @Composable
 fun ButtonWithBorder(
     text: String,
-    textColor: Color = Purple200,
-    borderColor: Color = Purple200,
+    textColor: Color = MaterialTheme.colorScheme.onPrimary,
+    borderColor: Color = MaterialTheme.colorScheme.primary,
     backgroundColor: Color = Color.White,
     click: () -> Unit = {}
 ) {
