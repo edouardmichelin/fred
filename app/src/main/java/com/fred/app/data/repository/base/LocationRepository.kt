@@ -12,5 +12,5 @@ interface LocationRepository {
         ownerId: String
     ): Flow<State<Location>>
 
-    suspend fun getAllLocations(): Flow<State<List<Location>>>
+    suspend fun getAllLocationsOf(userId: String): Flow<State<List<Location>>>
 }

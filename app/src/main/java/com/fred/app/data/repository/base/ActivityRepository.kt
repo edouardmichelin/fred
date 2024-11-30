@@ -15,5 +15,5 @@ interface ActivityRepository {
         ownerId: String
     ): Flow<State<Activity>>
 
-    suspend fun getAllActivities(): Flow<State<List<Activity>>>
+    suspend fun getAllActivitiesOf(userId: String): Flow<State<List<Activity>>>
 }

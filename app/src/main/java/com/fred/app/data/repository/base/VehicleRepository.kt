@@ -17,5 +17,5 @@ interface VehicleRepository {
         ownerId: String,
     ): Flow<State<Vehicle>>
 
-    suspend fun getAllVehicles(): Flow<State<List<Vehicle>>>
+    suspend fun getAllVehiclesOf(userId: String): Flow<State<List<Vehicle>>>
 }

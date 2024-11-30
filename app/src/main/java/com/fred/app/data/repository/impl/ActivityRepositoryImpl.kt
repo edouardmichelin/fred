@@ -3,6 +3,8 @@ package com.fred.app.data.repository.impl
 import com.fred.app.data.repository.base.ActivityRepository
 import com.fred.app.data.repository.model.Activity
 import com.fred.app.data.repository.model.ActivityType
+import com.fred.app.data.repository.model.Location
+import com.fred.app.data.repository.model.Vehicle
 import com.fred.app.util.Constants.Firestore.ACTIVITIES
 import com.fred.app.util.State
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,11 +52,14 @@ class ActivityRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllActivities(): Flow<State<List<Activity>>> = flow {
+    override suspend fun getAllActivitiesOf(userId: String): Flow<State<List<Activity>>> = flow {
         emit(State.Loading)
 
         try {
-            val refs = collection.get().await()
+            val refs = collection
+                .whereEqualTo(Location::ownerId.name, userId)
+                .get()
+                .await()
             val data = refs.toObjects(Activity::class.java)
 
             if (data.isNotEmpty()) emit(State.Success(data))

@@ -1,7 +1,6 @@
 package com.fred.app.data.repository.impl
 
 import com.fred.app.data.repository.base.LocationRepository
-import com.fred.app.data.repository.model.Activity
 import com.fred.app.data.repository.model.Location
 import com.fred.app.util.Constants.Firestore.LOCATIONS
 import com.fred.app.util.State
@@ -46,11 +45,14 @@ class LocationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllLocations(): Flow<State<List<Location>>> = flow {
+    override suspend fun getAllLocationsOf(userId: String): Flow<State<List<Location>>> = flow {
         emit(State.Loading)
 
         try {
-            val refs = collection.get().await()
+            val refs = collection
+                .whereEqualTo(Location::ownerId.name, userId)
+                .get()
+                .await()
             val data = refs.toObjects(Location::class.java)
 
             if (data.isNotEmpty()) emit(State.Success(data))

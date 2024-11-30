@@ -35,6 +35,13 @@ class VehicleRepositoryImpl @Inject constructor(
             val id = collection.document().id
             val vehicle = Vehicle(
                 id = id,
+                type = type,
+                name = name,
+                fuelType = fuelType,
+                age = age,
+                km = km,
+                carbonFootprint = carbonFootprint,
+                ownerId = ownerId
             )
 
             collection.document(id).set(vehicle).await()
@@ -49,11 +56,14 @@ class VehicleRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllVehicles(): Flow<State<List<Vehicle>>> = flow {
+    override suspend fun getAllVehiclesOf(userId: String): Flow<State<List<Vehicle>>> = flow {
         emit(State.Loading)
 
         try {
-            val refs = collection.get().await()
+            val refs = collection
+                .whereEqualTo(Vehicle::ownerId.name, userId)
+                .get()
+                .await()
             val data = refs.toObjects(Vehicle::class.java)
 
             if (data.isNotEmpty()) emit(State.Success(data))
