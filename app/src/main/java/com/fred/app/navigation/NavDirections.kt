@@ -7,4 +7,5 @@ sealed class NavDirections(val route: String) {
   object Profile : NavDirections("profile")
   object Personal : NavDirections("personal")
   object Leaderboard : NavDirections("leaderboard")
+  object Transports : NavDirections("transports")
 }

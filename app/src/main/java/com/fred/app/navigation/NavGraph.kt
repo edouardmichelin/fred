@@ -15,10 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fred.app.presentation.home.HomeScreen
 import com.fred.app.presentation.onboarding.personal.PersonalScreen
 import com.fred.app.presentation.onboarding.splash.SplashScreen
+import com.fred.app.presentation.onboarding.transports.TransportationSurveyScreen
 import com.fred.app.presentation.profile.ProfileScreen
 import com.fred.app.ui.component.DefaultScaffold
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -52,8 +54,12 @@ fun NavGraph(startDestination: String = NavDirections.Splash.route) {
             }
 
             composable(NavDirections.Personal.route) {
-                onBoardingFinished = true
                 PersonalScreen(navController, { _, _, _, _, _-> run {}})
+            }
+
+            composable(NavDirections.Transports.route) {
+                onBoardingFinished = true
+                TransportationSurveyScreen(onSubmit = { }, navController)
             }
 
             composable(NavDirections.Home.route) {

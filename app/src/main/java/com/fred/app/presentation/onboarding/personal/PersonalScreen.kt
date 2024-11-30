@@ -156,19 +156,17 @@ fun PersonalScreen(
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Other content like input fields and chips...
                 }
 
-                // Place the button at the bottom center using align
                 Button(
                     onClick = {
                         val parsedAge = age.toIntOrNull() ?: 0
                         onSubmit(name, username, email, parsedAge, selectedGender)
-                        navController.navigate("home")
+                        navController.navigate("transports")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .align(Alignment.BottomCenter) // Now valid within BoxScope
+                        .align(Alignment.BottomCenter)
                         .padding(16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondaryContainer,
