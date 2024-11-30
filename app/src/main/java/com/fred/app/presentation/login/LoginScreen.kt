@@ -3,16 +3,17 @@ package com.fred.app.presentation.login
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.blankj.utilcode.util.LogUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -52,7 +52,7 @@ fun LoginScreen(
                 viewModel.loginWithCredential(credential)
 
             } catch (e: ApiException) {
-                LogUtils.d("Google sign in failed $e")
+                Log.d("TAG", "Google sign in failed $e")
             }
         }
 
@@ -70,7 +70,7 @@ fun LoginScreen(
                     .padding(start = 16.dp, end = 16.dp),
                 shape = RoundedCornerShape(6.dp),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Black,
+                    //backgroundColor = Color.Black,
                     contentColor = Color.White
                 )
             ) {

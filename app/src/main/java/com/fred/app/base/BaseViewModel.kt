@@ -1,8 +1,8 @@
 package com.fred.app.base
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.blankj.utilcode.util.LogUtils
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -24,7 +24,7 @@ abstract class BaseViewModel<State : IViewState, Event : IViewEvent> : ViewModel
     protected fun setState(reduce: State.() -> State) {
         val newState = state.reduce()
         _uiState.value = newState
-        LogUtils.d("$newState")
+        Log.d("TAG", "$newState")
     }
 
     protected fun setEvent(event: Event) {

@@ -1,9 +1,9 @@
 package com.fred.app.ui.component
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Snackbar
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.SnackbarHostState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.integerResource
@@ -17,8 +17,8 @@ fun DefaultSnackBar(
 ) {
     SnackbarHost(hostState) {
         Snackbar(
-            elevation = 0.dp,
-            backgroundColor = Color(integerResource(id = status.backgroundColor)),
+            //elevation = 0.dp,
+            //backgroundColor = Color(integerResource(id = status.backgroundColor)),
             snackbarData = it,
             shape = MaterialTheme.shapes.medium
         )

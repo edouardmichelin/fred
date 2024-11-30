@@ -1,7 +1,6 @@
 package com.fred.app.presentation.splash
 
 import androidx.lifecycle.viewModelScope
-import com.blankj.utilcode.util.LogUtils
 import com.fred.app.base.BaseViewModel
 import com.fred.app.base.IViewEvent
 import com.fred.app.base.IViewState
@@ -38,7 +37,6 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 ViewEvent.Event -> {
-                    LogUtils.d("$this")
                     setState {
                         state.copy(
                             isLoading = true

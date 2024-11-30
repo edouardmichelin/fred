@@ -5,11 +5,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,12 +31,11 @@ fun ProfileScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
 
-
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(key1 = state.getUserError) {
         launch {
             if (state.getUserError.isNotEmpty())
-                scaffoldState.snackbarHostState.showSnackbar(state.getUserError)
+                snackbarHostState.showSnackbar(state.getUserError)
         }
     }
 
@@ -60,8 +62,8 @@ fun ProfileScreen(
                 }
             )
         },
-        loading = state.isLoading,
-        scaffoldState = scaffoldState
+        snackbarHostState = snackbarHostState
+
     ) { padding ->
         Column(modifier = Modifier
             .padding(4.dp)

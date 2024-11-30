@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.fred.app.ui.component.Loading
 import com.fred.app.util.NavigateTo
 import com.fred.app.util.login.AuthenticationState
 
@@ -24,5 +23,4 @@ fun SplashScreen(
         NavigateTo(navigateToLogin)
     }
 
-    Loading(true)
 }

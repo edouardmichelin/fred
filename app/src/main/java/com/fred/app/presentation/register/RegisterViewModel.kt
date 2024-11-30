@@ -1,7 +1,6 @@
 package com.fred.app.presentation.register
 
 import androidx.lifecycle.viewModelScope
-import com.blankj.utilcode.util.LogUtils
 import com.fred.app.base.BaseViewModel
 import com.fred.app.base.IViewEvent
 import com.fred.app.base.IViewState
@@ -15,10 +14,6 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase,
 ) : BaseViewModel<RegisterViewModel.ViewState, RegisterViewModel.ViewEvent>() {
-
-    init {
-        LogUtils.d("$this")
-    }
 
     fun temp() {
         viewModelScope.launch {
@@ -48,10 +43,8 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is ViewEvent.Event -> {
-                    LogUtils.d("$this")
                 }
                 is ViewEvent.SetAddress -> {
-                    LogUtils.d("$this")
                     setState {
                         state.copy(
                             address = event.text
@@ -59,7 +52,6 @@ class RegisterViewModel @Inject constructor(
                     }
                 }
                 is ViewEvent.SetEmail -> {
-                    LogUtils.d("$this")
                     setState {
                         state.copy(
                             email = event.text
@@ -67,7 +59,6 @@ class RegisterViewModel @Inject constructor(
                     }
                 }
                 is ViewEvent.SetUsername -> {
-                    LogUtils.d("$this")
                     setState {
                         state.copy(
                             username = event.text
@@ -75,7 +66,6 @@ class RegisterViewModel @Inject constructor(
                     }
                 }
                 is ViewEvent.SetName -> {
-                    LogUtils.d("$this")
                     setState {
                         state.copy(
                             name = event.text
@@ -83,7 +73,6 @@ class RegisterViewModel @Inject constructor(
                     }
                 }
                 is ViewEvent.SetPhone -> {
-                    LogUtils.d("$this")
                     setState {
                         state.copy(
                             phone = event.text
@@ -91,7 +80,6 @@ class RegisterViewModel @Inject constructor(
                     }
                 }
                 is ViewEvent.SetNewsletterCheck -> {
-                    LogUtils.d("$this")
                     setState {
                         state.copy(
                             newsletterCheck = event.status
@@ -99,7 +87,6 @@ class RegisterViewModel @Inject constructor(
                     }
                 }
                 is ViewEvent.SetTermsCheck -> {
-                    LogUtils.d("$this")
                     setState {
                         state.copy(
                             termsCheck = event.status

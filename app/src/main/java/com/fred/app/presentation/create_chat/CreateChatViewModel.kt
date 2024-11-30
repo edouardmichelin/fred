@@ -1,7 +1,7 @@
 package com.fred.app.presentation.create_chat
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.blankj.utilcode.util.LogUtils
 import com.fred.app.base.BaseViewModel
 import com.fred.app.base.IViewEvent
 import com.fred.app.base.IViewState
@@ -16,10 +16,6 @@ import javax.inject.Inject
 class CreateChatViewModel @Inject constructor(
     private val createChatUseCase: CreateChatUseCase,
 ) : BaseViewModel<CreateChatViewModel.ViewState, CreateChatViewModel.ViewEvent>() {
-
-    init {
-        LogUtils.d("$this")
-    }
 
     override fun createInitialState(): ViewState = ViewState()
 
@@ -36,7 +32,7 @@ class CreateChatViewModel @Inject constructor(
                     triggerEvent(ViewEvent.SetCreatedChat(response.data))
                 }
                 is State.Error -> {
-                    LogUtils.d("${response.exception}")
+                    Log.d("TAG", "${response.exception}")
                     response.exception.message?.let {
                         triggerEvent(ViewEvent.SetCreateChatError(it))
                     }

@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,8 +45,8 @@ fun ButtonWithBorder(
         onClick = click,
         border = BorderStroke(1.dp, borderColor),
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = borderColor,
-            backgroundColor = backgroundColor
+            //contentColor = borderColor,
+            //backgroundColor = backgroundColor
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -109,11 +109,11 @@ fun ButtonWithElevation(
 ) {
     Button(
         onClick = click,
-        elevation = ButtonDefaults.elevation(
-            defaultElevation = 10.dp,
-            pressedElevation = 15.dp,
-            disabledElevation = 0.dp
-        ),
+        //elevation = ButtonDefaults.elevation(
+        //    defaultElevation = 10.dp,
+        //    pressedElevation = 15.dp,
+        //    disabledElevation = 0.dp
+        //),
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()

@@ -1,7 +1,7 @@
 package com.fred.app.presentation.profile
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.blankj.utilcode.util.LogUtils
 import com.fred.app.base.BaseViewModel
 import com.fred.app.base.IViewEvent
 import com.fred.app.base.IViewState
@@ -34,7 +34,7 @@ class ProfileViewModel @Inject constructor(
                     triggerEvent(ViewEvent.SetUser(user))
                 }
                 is State.Error -> {
-                    LogUtils.d("${result.exception}")
+                    Log.d("TAG", "${result.exception}")
                     result.exception.message?.let {
                         triggerEvent(ViewEvent.SetGetUserError(it))
                     }
@@ -60,7 +60,6 @@ class ProfileViewModel @Inject constructor(
                     triggerEvent(ViewEvent.SetUser(response.data))
                 }
                 is State.Error -> {
-                    LogUtils.d("${response.exception}")
                     response.exception.message?.let {
                         triggerEvent(ViewEvent.SetGetUserError(it))
                     }
