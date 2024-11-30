@@ -19,6 +19,7 @@ constructor(
     return try {
       when (val response = loginDataSource.loginWithCredential(authCredential)) {
         is State.Success -> response
+        is State.Loading -> State.Loading
         is State.Error -> response
       }
     } catch (e: Exception) {

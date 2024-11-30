@@ -20,6 +20,7 @@ constructor(
       authService.userId?.let {
         when (val response = getUserRepository.getUserById(it)) {
           is State.Success -> response
+          is State.Loading -> State.Loading
           is State.Error -> response
         }
       } ?: run { State.Error(CommonException()) }

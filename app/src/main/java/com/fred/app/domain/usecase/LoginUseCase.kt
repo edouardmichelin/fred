@@ -17,6 +17,7 @@ constructor(
       when (val response = loginRepository.loginWithCredential(input!!.authCredential)) {
         is State.Success -> response
         is State.Error -> response
+        is State.Loading -> State.Loading
       }
     } catch (e: Exception) {
       State.Error(e)

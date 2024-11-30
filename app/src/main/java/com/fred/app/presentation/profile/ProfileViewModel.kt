@@ -41,6 +41,7 @@ constructor(
           Log.d("TAG", "${result.exception}")
           result.exception.message?.let { triggerEvent(ViewEvent.SetGetUserError(it)) }
         }
+          is State.Loading -> {}
       }
     }
   }
@@ -63,6 +64,7 @@ constructor(
         is State.Error -> {
           response.exception.message?.let { triggerEvent(ViewEvent.SetGetUserError(it)) }
         }
+        is State.Loading -> {}
       }
     }
   }

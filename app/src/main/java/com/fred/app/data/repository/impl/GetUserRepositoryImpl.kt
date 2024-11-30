@@ -17,6 +17,7 @@ constructor(
       when (val response: State<User> = getUserDataSource.getUserById(userId = userId)) {
         is State.Success -> State.Success(response.data)
         is State.Error -> response
+        is State.Loading -> State.Loading
       }
     } catch (e: Exception) {
       State.Error(e)

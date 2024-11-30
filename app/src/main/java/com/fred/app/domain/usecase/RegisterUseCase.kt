@@ -31,6 +31,7 @@ constructor(
                 gender = input?.gender)) {
           is State.Success -> response
           is State.Error -> response
+          is State.Loading -> State.Loading
         }
       } ?: run { State.Error(UserNotFoundException("User not found!")) }
     } catch (exception: Exception) {

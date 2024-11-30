@@ -32,6 +32,7 @@ constructor(
               address = address,
               gender = gender)) {
         is State.Success -> State.Success(response.data)
+          is State.Loading -> State.Loading
         is State.Error -> response
       }
     } catch (e: Exception) {

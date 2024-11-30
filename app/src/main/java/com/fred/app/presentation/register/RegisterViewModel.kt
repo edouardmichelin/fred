@@ -36,6 +36,7 @@ constructor(
         is State.Error -> {
           response.exception
         }
+        is State.Loading -> {}
       }
     }
   }

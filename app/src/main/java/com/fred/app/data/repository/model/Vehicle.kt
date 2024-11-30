@@ -6,5 +6,6 @@ data class Vehicle(
     val fuelType: FuelType = FuelType.Muscle,
     val age: Int = 0,
     val km: Int = 0,
-    val carbonFootprint: Double = 0.0
+    val carbonFootprint: Double = 0.0,
+    val ownerId: String = ""
 )

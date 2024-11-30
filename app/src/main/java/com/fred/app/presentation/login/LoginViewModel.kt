@@ -29,6 +29,7 @@ constructor(
         is State.Error -> {
           triggerEvent(ViewEvent.SetState(AuthenticationState.UNAUTHENTICATED))
         }
+        is State.Loading -> {}
       }
     }
   }

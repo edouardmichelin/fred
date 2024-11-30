@@ -5,6 +5,7 @@ data class Activity(
     val type: ActivityType = ActivityType.None,
     val distance: Float = 0f,
     val timestamp: Long = System.currentTimeMillis(),
-    val transportation: String = "",
-    val impact: Int = 0
+    val vehicleId: String = "",
+    val impact: Int = 0,
+    val ownerId: String = ""
 )
