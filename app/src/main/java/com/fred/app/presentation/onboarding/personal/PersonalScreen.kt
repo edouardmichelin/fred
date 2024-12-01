@@ -1,8 +1,8 @@
 package com.fred.app.presentation.onboarding.personal
 
-import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,18 +17,28 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,9 +46,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.fred.app.R
@@ -46,12 +58,11 @@ import com.fred.app.data.repository.model.Avatar
 import com.fred.app.data.repository.model.Diet
 import com.fred.app.data.repository.model.Gender
 import com.fred.app.data.repository.model.Location
+import kotlin.math.exp
+import kotlin.math.expm1
 
 
-
-
-
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PersonalScreen(
     navController: NavController,
@@ -68,6 +79,12 @@ fun PersonalScreen(
     var selectedDiet by remember { mutableStateOf<Diet?>(null) }
     var selectedAvatar by remember { mutableStateOf<Avatar?>(null) }
     var showAvatarDialog by remember { mutableStateOf(false) }
+
+    var expanded by remember { mutableStateOf(false) }
+    var selectedAddress by remember { mutableStateOf<Location?>(null) }
+    var searchQuery by remember { mutableStateOf("") }
+
+    val queriedLocations by viewModel.queriedLocations.collectAsState()
 
     val genderOptions = Gender.values().toList()
     val dietOptions = Diet.values().toList()
@@ -114,7 +131,6 @@ fun PersonalScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
 
             // Name Input Field
             OutlinedTextField(
@@ -124,7 +140,57 @@ fun PersonalScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            ExposedDropdownMenuBox(
+                expanded = expanded && queriedLocations.isNotEmpty(),
+                onExpandedChange = { expanded = it } // Toggle dropdown visibility
+            ) {
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = {
+                        searchQuery = it
+                        viewModel.searchLocation(it)
+                        expanded = true // Show dropdown when user starts typing
+                    },
+                    label = { Text("Address") },
+                    modifier =
+                    Modifier.menuAnchor() // Anchor the dropdown to this text field
+                        .fillMaxWidth()
+                        .testTag("inputTodoLocation"),
+                    singleLine = true)
+
+                // Dropdown menu for location suggestions
+                // Another approach using DropdownMenu is in EditToDo.kt
+                ExposedDropdownMenu(
+                    expanded = expanded && queriedLocations.isNotEmpty(),
+                    onDismissRequest = { expanded = false }) {
+                    queriedLocations.filterNotNull().take(3).forEach { location ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text =
+                                    location.name.take(30) +
+                                            if (location.name.length > 30) "..."
+                                            else "", // Limit name length
+                                    maxLines = 1 // Ensure name doesn't overflow
+                                )
+                            },
+                            onClick = {
+                                selectedAddress = location
+                                searchQuery = location.name
+                                expanded = false // Close dropdown on selection
+                            },
+                            modifier = Modifier.padding(8.dp))
+                    }
+
+                    if (queriedLocations.size > 3) {
+                        DropdownMenuItem(
+                            text = { Text("More...") },
+                            onClick = { /* Optionally show more results */},
+                            modifier = Modifier.padding(8.dp))
+                    }
+                }
+            }
+
 
             // Other Input Fields
             OutlinedTextField(
@@ -134,7 +200,6 @@ fun PersonalScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = email,
@@ -144,7 +209,6 @@ fun PersonalScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = age,
@@ -154,7 +218,6 @@ fun PersonalScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
 
             // Gender Selection with Chips
             Text(
@@ -240,7 +303,6 @@ fun PersonalScreen(
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp)
                 )
 
                 FlowRow(
@@ -267,8 +329,9 @@ fun PersonalScreen(
                         mail = email,
                         avatarId = selectedAvatar?.id ?: 0,
                         gender = selectedGender ?: Gender.Other,
-                        address = Location(),
+                        address = selectedAddress ?: Location(),
                         diet = selectedDiet ?: Diet.Other,
+                        age = age.toIntOrNull() ?: 0
                     )
                     navController.navigate("transports")
                 },

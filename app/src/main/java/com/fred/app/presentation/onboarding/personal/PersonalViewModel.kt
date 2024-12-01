@@ -48,7 +48,8 @@ class PersonalViewModel @Inject constructor (
         avatarId: Int,
         gender: Gender,
         address: Location,
-        diet: Diet
+        diet: Diet,
+        age: Int,
     ) {
         viewModelScope.launch {
             registerUserUseCase(
@@ -59,6 +60,7 @@ class PersonalViewModel @Inject constructor (
                 gender = gender,
                 address = address,
                 diet = diet,
+                age = age,
             ).collect {
                 when (it) {
                     is State.Loading -> {}
