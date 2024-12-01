@@ -297,14 +297,16 @@ fun CarbonFootprintSuggestions(suggestions: List<Suggestion>, modifier: Modifier
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable {
-                            checkedStates[index] = true
-                        }
                         .padding(vertical = 8.dp)
                 ) {
                     Checkbox(
                         checked = checkedStates[index],
-                        onCheckedChange = { onCheck(s) },
+                        onCheckedChange = { isChecked ->
+                            if (!checkedStates[index]) {
+                                onCheck(s)
+                            }
+                            checkedStates[index] = true // Update the state for the current checkbox
+                        },
                         modifier = Modifier.size(32.dp),
                         colors = CheckboxDefaults.colors(
                             checkedColor = MaterialTheme.colorScheme.primary,

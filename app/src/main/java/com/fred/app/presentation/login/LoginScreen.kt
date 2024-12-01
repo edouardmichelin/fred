@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.fred.app.R
+import com.fred.app.data.repository.model.User
 import com.fred.app.ui.component.DefaultScaffold
 import com.fred.app.util.Constants.Firebase.CLIENT_ID
 import com.fred.app.util.NavigateTo
@@ -37,6 +38,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel,
+    setUserRegistered: () -> Unit,
     navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
 ) {
@@ -84,6 +86,7 @@ fun LoginScreen(
     if (state.loginState == AuthenticationState.AUTHENTICATED) {
         Log.d("LoginScreen", "User authenticated")
         if (state.isUserRegistered) {
+            setUserRegistered()
             NavigateTo(navigateToHome)
         } else {
             NavigateTo(navigateToRegister)

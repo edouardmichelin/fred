@@ -79,6 +79,7 @@ fun NavGraph(startDestination: String = NavDirections.Login.route) {
             composable(NavDirections.Login.route) {
                 LoginScreen(
                     hiltViewModel(),
+                    setUserRegistered = { onBoardingFinished = true },
                     navigateToRegister = {
                         navController.navigate(
                             route = NavDirections.Splash.route,
@@ -91,6 +92,7 @@ fun NavGraph(startDestination: String = NavDirections.Login.route) {
                             popUpTo = NavDirections.Home.route
                         )
                     }
+
                 )
             }
 
