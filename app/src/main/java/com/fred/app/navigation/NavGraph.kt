@@ -81,14 +81,14 @@ fun NavGraph(startDestination: String = NavDirections.Login.route) {
                     hiltViewModel(),
                     navigateToRegister = {
                         navController.navigate(
-                            route = NavDirections.Register.route,
-                            popUpTo = NavDirections.Register.route
+                            route = NavDirections.Splash.route,
+                            popUpTo = NavDirections.Splash.route
                         )
                     },
                     navigateToHome = {
                         navController.navigate(
-                            route = NavDirections.Splash.route,
-                            popUpTo = NavDirections.Splash.route
+                            route = NavDirections.Home.route,
+                            popUpTo = NavDirections.Home.route
                         )
                     }
                 )

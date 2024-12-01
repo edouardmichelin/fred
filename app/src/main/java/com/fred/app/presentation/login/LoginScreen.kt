@@ -83,7 +83,11 @@ fun LoginScreen(
 
     if (state.loginState == AuthenticationState.AUTHENTICATED) {
         Log.d("LoginScreen", "User authenticated")
-        NavigateTo(navigateToHome)
+        if (state.isUserRegistered) {
+            NavigateTo(navigateToHome)
+        } else {
+            NavigateTo(navigateToRegister)
+        }
     }
 }
 
