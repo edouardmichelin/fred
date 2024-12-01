@@ -57,7 +57,7 @@ class RegisterUserRepositoryImpl @Inject constructor(
           val data = chatRef.toObject(User::class.java)
 
           if (data != null) emit(State.Success(data))
-          else State.Error(Exception("Could not find user"))
+          else emit(State.Error(Exception("Could not find user")))
       } catch (exception: Exception) {
           emit(State.Error(exception))
       }

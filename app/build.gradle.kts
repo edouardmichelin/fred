@@ -1,3 +1,7 @@
+import java.io.FileInputStream
+import java.util.Properties
+
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -7,10 +11,20 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+
 android {
     namespace = "com.fred.app"
     compileSdk = 34
     compileSdk = 34
+
+    // Load API KEY From local.properties
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(FileInputStream(localPropertiesFile))
+    }
+
+    val openaiKey: String = localProperties.getProperty("OPENAI_API_KEY") ?: ""
 
     defaultConfig {
         applicationId = "com.fred.app"
@@ -28,6 +42,9 @@ android {
         buildFeatures {
             buildConfig = true
         }
+
+        manifestPlaceholders["OPENAI_API_KEY"] = openaiKey
+        buildConfigField("String", "OPENAI_API_KEY", "\"$openaiKey\"")
     }
 
     buildTypes {

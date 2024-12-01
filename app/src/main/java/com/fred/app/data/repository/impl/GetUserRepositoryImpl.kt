@@ -31,7 +31,7 @@ constructor(
       val data = refs.toObject(User::class.java)
 
       if (data != null) emit(State.Success(data))
-      else State.Success(listOf<Activity>())
+      else emit(State.Error(Exception("Could not find user")))
     } catch (exception: Exception) {
       emit(State.Error(exception))
     }

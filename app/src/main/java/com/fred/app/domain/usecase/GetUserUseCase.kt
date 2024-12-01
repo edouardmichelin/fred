@@ -1,5 +1,6 @@
 package com.fred.app.domain.usecase
 
+import android.util.Log
 import com.fred.app.data.repository.base.ActivityRepository
 import com.fred.app.data.repository.base.GetUserRepository
 import com.fred.app.data.repository.base.LocationRepository
@@ -22,7 +23,7 @@ constructor(
     private val locationRepository: LocationRepository
 ) {
 
-  suspend fun invoke(): Flow<State<User>> = flow {
+  suspend operator fun invoke(): Flow<State<User>> = flow {
     authService.userId?.let { id ->
         getUserRepository.getUserById(id).collect { user ->
           when (user) {
@@ -33,11 +34,13 @@ constructor(
                   is State.Error -> emit(State.Error(vehicles.exception))
                   is State.Success -> {
                     locationRepository.getAllLocationsOf(id).collect { locations ->
+                      Log.d("GetUserUseCase", "Locations: $locations")
                       when (locations) {
                         is State.Loading -> emit(State.Loading)
                         is State.Error -> emit(State.Error(locations.exception))
                         is State.Success -> {
                           activityRepository.getAllActivitiesOf(id).collect { activities ->
+                            Log.d("GetUserUseCase", "Activities: $activities")
                             when (activities) {
                               is State.Loading -> emit(State.Loading)
                               is State.Error -> emit(State.Error(activities.exception))

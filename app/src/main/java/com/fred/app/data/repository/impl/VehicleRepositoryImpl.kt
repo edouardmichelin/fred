@@ -50,7 +50,7 @@ class VehicleRepositoryImpl @Inject constructor(
             val data = chatRef.toObject(Vehicle::class.java)
 
             if (data != null) emit(State.Success(data))
-            else State.Error(Exception("Could not find vehicle"))
+            else emit(State.Error(Exception("Could not find vehicle")))
         } catch (exception: Exception) {
             emit(State.Error(exception))
         }
@@ -67,7 +67,7 @@ class VehicleRepositoryImpl @Inject constructor(
             val data = refs.toObjects(Vehicle::class.java)
 
             if (data.isNotEmpty()) emit(State.Success(data))
-            else State.Success(listOf<Vehicle>())
+            else emit(State.Success(listOf()))
         } catch (exception: Exception) {
             emit(State.Error(exception))
         }

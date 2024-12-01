@@ -45,7 +45,7 @@ class ActivityRepositoryImpl @Inject constructor(
             val data = chatRef.toObject(Activity::class.java)
 
             if (data != null) emit(State.Success(data))
-            else State.Error(Exception("Could not find activity"))
+            else emit(State.Error(Exception("Could not find activity")))
         } catch (exception: Exception) {
             emit(State.Error(exception))
         }
@@ -62,7 +62,7 @@ class ActivityRepositoryImpl @Inject constructor(
             val data = refs.toObjects(Activity::class.java)
 
             if (data.isNotEmpty()) emit(State.Success(data))
-            else State.Success(listOf<Activity>())
+            else emit(State.Success(listOf()))
         } catch (exception: Exception) {
             emit(State.Error(exception))
         }

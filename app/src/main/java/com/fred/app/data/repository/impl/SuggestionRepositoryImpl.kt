@@ -1,6 +1,7 @@
 package com.fred.app.data.repository.impl
 
 import android.util.Log
+import com.fred.app.BuildConfig
 import com.fred.app.data.repository.base.SuggestionRepository
 import com.fred.app.data.repository.model.Activity
 import com.fred.app.data.repository.model.Suggestion
@@ -19,10 +20,12 @@ import javax.inject.Inject
 
 class SuggestionRepositoryImpl @Inject constructor(
     private val client: OkHttpClient,
-    private val openAiApiKey: String = "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"
+    private val openAiApiKey: String = BuildConfig.OPENAI_API_KEY
 ) : SuggestionRepository {
     override suspend fun get(prompt: String): Flow<State<List<Suggestion>>> = flow {
         emit(State.Loading)
+
+        Log.d("SuggestionRepositoryImpl", "Prompt: $prompt")
 
         val url = "https://api.openai.com/v1/chat/completions"
 
@@ -36,7 +39,7 @@ class SuggestionRepositoryImpl @Inject constructor(
                 })
                 put(JSONObject().apply {
                     put("role", "user")
-                    put("content", prompt)
+                    put("content", "")
                 })
             })
             put("temperature", 0.7)

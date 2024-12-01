@@ -56,7 +56,7 @@ class LocationRepositoryImpl @Inject constructor(
             val data = chatRef.toObject(Location::class.java)
 
             if (data != null) emit(State.Success(data))
-            else State.Error(Exception("Could not find location"))
+            else emit(State.Error(Exception("Could not find location")))
         } catch (exception: Exception) {
             emit(State.Error(exception))
         }
@@ -104,7 +104,7 @@ class LocationRepositoryImpl @Inject constructor(
 
     override suspend fun getAllLocationsOf(userId: String): Flow<State<List<Location>>> = flow {
         emit(State.Loading)
-
+        Log.d("getAllLocationsOf", Location::ownerId.name)
         try {
             val refs = collection
                 .whereEqualTo(Location::ownerId.name, userId)
@@ -113,7 +113,7 @@ class LocationRepositoryImpl @Inject constructor(
             val data = refs.toObjects(Location::class.java)
 
             if (data.isNotEmpty()) emit(State.Success(data))
-            else State.Success(listOf<Location>())
+            else emit(State.Success(listOf()))
         } catch (exception: Exception) {
             emit(State.Error(exception))
         }

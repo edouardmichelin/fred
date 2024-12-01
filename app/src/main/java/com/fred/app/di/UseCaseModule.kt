@@ -104,7 +104,6 @@ class UseCaseModule {
     @Provides
     fun provideGetSuggestionsUseCase(
         authService: AuthService,
-        activityRepository: ActivityRepository,
         suggestionRepository: SuggestionRepository,
-    ) = GetSuggestionsUseCase(authService, activityRepository, suggestionRepository)
+    ) = GetSuggestionsUseCase(authService, suggestionRepository)
 }
