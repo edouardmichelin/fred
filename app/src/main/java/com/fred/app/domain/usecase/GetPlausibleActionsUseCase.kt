@@ -94,29 +94,39 @@ constructor(
   }
 
   private fun isAroundGoingToWorkTime(): Boolean {
-    val lunchStart = LocalTime.of(6, 0)
-    val lunchEnd = LocalTime.of(9, 30)
+    val start = LocalTime.of(6, 0)
+    val end = LocalTime.of(9, 30)
 
     val currentTime = LocalTime.now()
 
-    return currentTime.isAfter(lunchStart) && currentTime.isBefore(lunchEnd)
+    return currentTime.isAfter(start) && currentTime.isBefore(end)
   }
 
   private fun isAroundWorkTime(): Boolean {
-    val lunchStart = LocalTime.of(9, 30)
-    val lunchEnd = LocalTime.of(19, 0)
+    val start = LocalTime.of(9, 30)
+    val end = LocalTime.of(19, 0)
 
     val currentTime = LocalTime.now()
 
-    return currentTime.isAfter(lunchStart) && currentTime.isBefore(lunchEnd)
+    return currentTime.isAfter(start) && currentTime.isBefore(end)
   }
 
   private fun isAroundLunchTime(): Boolean {
-    val lunchStart = LocalTime.of(11, 30)
-    val lunchEnd = LocalTime.of(15, 0)
+    val start = LocalTime.of(11, 30)
+    val end = LocalTime.of(15, 0)
 
     val currentTime = LocalTime.now()
 
-    return currentTime.isAfter(lunchStart) && currentTime.isBefore(lunchEnd)
+    return currentTime.isAfter(start) && currentTime.isBefore(end)
   }
+
+    private fun isAroundDinerTime(): Boolean {
+        val start = LocalTime.of(11, 30)
+        val end = LocalTime.of(15, 0)
+
+        val currentTime = LocalTime.now()
+
+        return currentTime.isAfter(start) && currentTime.isBefore(end)
+    }
+
 }
