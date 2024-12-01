@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.Button
@@ -31,28 +35,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.fred.app.R
+import com.fred.app.data.repository.model.Avatar
+import com.fred.app.data.repository.model.Diet
 import com.fred.app.data.repository.model.Gender
+import com.fred.app.data.repository.model.Location
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PersonalScreen(
     navController: NavController,
     onSubmit: (String, String, String, Int, Gender?) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PersonalViewModel = hiltViewModel(),
 ) {
     var name by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
     var selectedGender by remember { mutableStateOf<Gender?>(null) }
+    var selectedDiet by remember { mutableStateOf<Diet?>(null) }
 
     val genderOptions = Gender.values().toList()
+    val dietOptions = Diet.values().toList()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Column(
             modifier = Modifier
@@ -141,7 +154,37 @@ fun PersonalScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "Select Diet",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                )
+
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    dietOptions.forEach { diet ->
+                        androidx.compose.material3.FilterChip(
+                            selected = selectedDiet == diet,
+                            onClick = { selectedDiet = diet },
+                            label = { Text(diet.name) },
+                            colors = androidx.compose.material3.FilterChipDefaults.filterChipColors()
+                        )
+                    }
+                }
+            }
+
 
             // Submit Button
             Box(
@@ -159,8 +202,15 @@ fun PersonalScreen(
 
                 Button(
                     onClick = {
-                        val parsedAge = age.toIntOrNull() ?: 0
-                        onSubmit(name, username, email, parsedAge, selectedGender)
+                        viewModel.registerUser(
+                            username = username,
+                            name = name,
+                            mail = email,
+                            avatarId = Avatar.Cat.id,
+                            gender = selectedGender ?: Gender.Other,
+                            address = Location(),
+                            diet = selectedDiet ?: Diet.Other,
+                        )
                         navController.navigate("transports")
                     },
                     modifier = Modifier

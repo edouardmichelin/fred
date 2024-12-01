@@ -18,19 +18,22 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fred.app.presentation.home.HomeScreen
+import com.fred.app.presentation.login.LoginScreen
 import com.fred.app.presentation.onboarding.energy.EnergyOnboardingScreen
 import com.fred.app.presentation.onboarding.personal.PersonalScreen
 import com.fred.app.presentation.onboarding.splash.SplashScreen
 import com.fred.app.presentation.onboarding.transports.TransportationSurveyScreen
 import com.fred.app.presentation.profile.ProfileScreen
+import com.fred.app.presentation.register.RegisterScreen
 import com.fred.app.ui.component.DefaultScaffold
+import com.fred.app.util.navigate
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun NavGraph(startDestination: String = NavDirections.Splash.route) {
+fun NavGraph(startDestination: String = NavDirections.Login.route) {
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -70,6 +73,33 @@ fun NavGraph(startDestination: String = NavDirections.Splash.route) {
                 HomeScreen(
                     hiltViewModel(),
                     navigateToProfile = { navController.navigate(route = NavDirections.Profile.route) },
+                )
+            }
+
+            composable(NavDirections.Login.route) {
+                LoginScreen(
+                    hiltViewModel(),
+                    navigateToRegister = {
+                        navController.navigate(
+                            route = NavDirections.Register.route,
+                            popUpTo = NavDirections.Register.route
+                        )
+                    },
+                    navigateToHome = {
+                        navController.navigate(
+                            route = NavDirections.Splash.route,
+                            popUpTo = NavDirections.Splash.route
+                        )
+                    }
+                )
+            }
+
+            composable(NavDirections.Register.route) {
+                RegisterScreen(
+                    hiltViewModel(),
+                    navigateToBack = {
+                        navController.popBackStack()
+                    }
                 )
             }
 
