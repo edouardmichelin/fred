@@ -21,5 +21,6 @@ Fred is your AI-powered companion for a greener lifestyle, guiding you to reduce
 Fred is an Android application developed in Kotlin using Jetpack Compose. It follows the MVVM architecture and leverages:
 - **Firebase** for cloud services such as authentication and data storage.
 - **OpenAI's GPT-3.5** for generating tailored recommendations.
+- **Nominatim** for geocoding.
 
 <img src="./screenshot.png" width="256" alt="Home Screen Snapshot">
