@@ -40,7 +40,10 @@ class UseCaseModule {
     fun provideGetUserUseCase(
         authService: AuthService,
         getUserRepository: GetUserRepository,
-    ) = GetUserUseCase(authService, getUserRepository)
+        vehicleRepository: VehicleRepository,
+        activityRepository: ActivityRepository,
+        locationRepository: LocationRepository
+    ) = GetUserUseCase(authService, getUserRepository, vehicleRepository, activityRepository, locationRepository)
 
     @ViewModelScoped
     @Provides

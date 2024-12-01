@@ -50,8 +50,8 @@ class RepositoryModule {
 
   @Provides
   fun provideGetUserRepository(
-      getUserDataSource: GetUserDataSource,
-  ): GetUserRepository = GetUserRepositoryImpl(getUserDataSource)
+      db: FirebaseFirestore,
+  ): GetUserRepository = GetUserRepositoryImpl(db)
 
 
     @Provides

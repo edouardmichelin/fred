@@ -12,5 +12,6 @@ data class User(
     val diet: Diet = Diet.Other,
     val transportations: List<Vehicle> = listOf(),
     val locations: List<Location> = listOf(),
+    val activities: List<Activity> = listOf(),
     val score: Int = 0
 )

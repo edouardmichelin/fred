@@ -2,25 +2,38 @@ package com.fred.app.data.repository.impl
 
 import com.fred.app.data.datasource.base.GetUserDataSource
 import com.fred.app.data.repository.base.GetUserRepository
+import com.fred.app.data.repository.model.Activity
+import com.fred.app.data.repository.model.Location
 import com.fred.app.data.repository.model.User
 import com.fred.app.util.State
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
+import com.fred.app.util.Constants.Firestore.USERS
 import javax.inject.Inject
 
 class GetUserRepositoryImpl
 @Inject
 constructor(
-    private val getUserDataSource: GetUserDataSource,
+    private val db: FirebaseFirestore,
 ) : GetUserRepository {
+  private val collection = db.collection(USERS)
 
-  override suspend fun getUserById(userId: String): State<User> {
-    return try {
-      when (val response: State<User> = getUserDataSource.getUserById(userId = userId)) {
-        is State.Success -> State.Success(response.data)
-        is State.Error -> response
-        is State.Loading -> State.Loading
-      }
-    } catch (e: Exception) {
-      State.Error(e)
+  override suspend fun getUserById(userId: String): Flow<State<User>> = flow {
+    emit(State.Loading)
+
+    try {
+      val refs = collection
+        .document(userId)
+        .get()
+        .await()
+      val data = refs.toObject(User::class.java)
+
+      if (data != null) emit(State.Success(data))
+      else State.Success(listOf<Activity>())
+    } catch (exception: Exception) {
+      emit(State.Error(exception))
     }
   }
 }
