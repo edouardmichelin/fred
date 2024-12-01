@@ -127,7 +127,8 @@ fun HomeScreen(
 @Composable
 fun IndeterminateCircularIndicator() {
     CircularProgressIndicator(
-        modifier = Modifier.width(64.dp).padding(16.dp),
+        modifier = Modifier.width(64.dp)
+            .padding(16.dp),
         color = MaterialTheme.colorScheme.secondary,
         trackColor = MaterialTheme.colorScheme.surfaceVariant,
 
