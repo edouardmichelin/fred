@@ -2,7 +2,7 @@ package com.fred.app.domain.usecase
 
 import android.util.Log
 import com.fred.app.data.repository.base.ActivityRepository
-import com.fred.app.data.repository.base.GetUserRepository
+import com.fred.app.data.repository.base.UserRepository
 import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.base.VehicleRepository
 import com.fred.app.data.repository.model.User
@@ -16,16 +16,16 @@ import javax.inject.Inject
 class GetUserUseCase
 @Inject
 constructor(
-    private val authService: AuthService,
-    private val getUserRepository: GetUserRepository,
-    private val vehicleRepository: VehicleRepository,
-    private val activityRepository: ActivityRepository,
-    private val locationRepository: LocationRepository
+  private val authService: AuthService,
+  private val userRepository: UserRepository,
+  private val vehicleRepository: VehicleRepository,
+  private val activityRepository: ActivityRepository,
+  private val locationRepository: LocationRepository
 ) {
 
   suspend operator fun invoke(): Flow<State<User>> = flow {
     authService.userId?.let { id ->
-        getUserRepository.getUserById(id).collect { user ->
+        userRepository.getUserById(id).collect { user ->
           when (user) {
             is State.Success -> {
               vehicleRepository.getAllVehiclesOf(id).collect { vehicles ->

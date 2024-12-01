@@ -7,14 +7,14 @@ import com.fred.app.data.datasource.impl.GetUserDataSourceImpl
 import com.fred.app.data.datasource.impl.LoginDataSourceImpl
 import com.fred.app.data.datasource.impl.RegisterDataSourceImpl
 import com.fred.app.data.repository.base.ActivityRepository
-import com.fred.app.data.repository.base.GetUserRepository
+import com.fred.app.data.repository.base.UserRepository
 import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.base.LoginRepository
 import com.fred.app.data.repository.base.RegisterUserRepository
 import com.fred.app.data.repository.base.SuggestionRepository
 import com.fred.app.data.repository.base.VehicleRepository
 import com.fred.app.data.repository.impl.ActivityRepositoryImpl
-import com.fred.app.data.repository.impl.GetUserRepositoryImpl
+import com.fred.app.data.repository.impl.UserRepositoryImpl
 import com.fred.app.data.repository.impl.LocationRepositoryImpl
 import com.fred.app.data.repository.impl.LoginRepositoryImpl
 import com.fred.app.data.repository.impl.RegisterUserRepositoryImpl
@@ -51,7 +51,7 @@ class RepositoryModule {
   @Provides
   fun provideGetUserRepository(
       db: FirebaseFirestore,
-  ): GetUserRepository = GetUserRepositoryImpl(db)
+  ): UserRepository = UserRepositoryImpl(db)
 
 
     @Provides

@@ -3,15 +3,20 @@ package com.fred.app.presentation.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.fred.app.data.repository.model.ActivityType
 import com.fred.app.data.repository.model.Suggestion
 import com.fred.app.data.repository.model.User
+import com.fred.app.domain.usecase.CreateActivityUseCase
 import com.fred.app.domain.usecase.GetSuggestionsUseCase
 import com.fred.app.domain.usecase.GetUserUseCase
 import com.fred.app.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
@@ -20,7 +25,8 @@ class HomeViewModel
 @Inject
 constructor(
     private val getSuggestionsUseCase: GetSuggestionsUseCase,
-    private val getUserUseCase: GetUserUseCase
+    private val getUserUseCase: GetUserUseCase,
+    private val createActivityUseCase: CreateActivityUseCase
 ) : ViewModel() {
     private val _user = MutableStateFlow<User?>(null)
     val user: StateFlow<User?> = _user.asStateFlow()
@@ -32,6 +38,39 @@ constructor(
     val isLoading = _isLoading
 
     init {
+        getUser()
+    }
+
+    fun completeSuggestion(
+        description: String,
+        score: Int
+    ) {
+        if (_user.value == null) return
+
+        viewModelScope.launch {
+            createActivityUseCase(
+                type = ActivityType.Suggestion,
+                distance = 0f,
+                vehicleId = "0",
+                impact = -score,
+                description = description
+            ).collect {
+                when (it) {
+                    is State.Loading -> _user.value = null
+                    is State.Error -> Log.d("HomeViewModel", "Error: ${it.exception}")
+                    is State.Success -> {
+                        getUserUseCase().collect {
+                            if (it is State.Success) {
+                                _user.value = it.data
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getUser() {
         viewModelScope.launch {
             getUserUseCase().collect {
                 when (it) {

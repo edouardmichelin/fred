@@ -20,10 +20,10 @@ class ActivityRepositoryImpl @Inject constructor(
     override suspend fun createActivity(
         type: ActivityType,
         distance: Float,
-        timestamp: Long,
         vehicleId: String,
         impact: Int,
-        ownerId: String
+        ownerId: String,
+        description: String
     ): Flow<State<Activity>> = flow {
         emit(State.Loading)
 
@@ -33,10 +33,10 @@ class ActivityRepositoryImpl @Inject constructor(
                 id = id,
                 type = type,
                 distance = distance,
-                timestamp = timestamp,
                 vehicleId = vehicleId,
                 impact = impact,
-                ownerId = ownerId
+                ownerId = ownerId,
+                description = description
             )
 
             collection.document(id).set(activity).await()

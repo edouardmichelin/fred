@@ -5,6 +5,7 @@ import com.fred.app.data.repository.base.VehicleRepository
 import com.fred.app.data.repository.model.Activity
 import com.fred.app.data.repository.model.FuelType
 import com.fred.app.data.repository.model.Location
+import com.fred.app.data.repository.model.User
 import com.fred.app.data.repository.model.Vehicle
 import com.fred.app.data.repository.model.VehicleType
 import com.fred.app.util.Constants.Firestore.VEHICLES
@@ -45,9 +46,26 @@ class VehicleRepositoryImpl @Inject constructor(
             )
 
             collection.document(id).set(vehicle).await()
-            val chatRef = collection.document(id).get().await()
+            val ref = collection.document(id).get().await()
 
-            val data = chatRef.toObject(Vehicle::class.java)
+            val data = ref.toObject(Vehicle::class.java)
+
+            if (data != null) emit(State.Success(data))
+            else emit(State.Error(Exception("Could not find vehicle")))
+        } catch (exception: Exception) {
+            emit(State.Error(exception))
+        }
+    }
+
+    override suspend fun getVehicleById(vehicleId: String): Flow<State<Vehicle>> = flow {
+        emit(State.Loading)
+
+        try {
+            val refs = collection
+                .document(vehicleId)
+                .get()
+                .await()
+            val data = refs.toObject(Vehicle::class.java)
 
             if (data != null) emit(State.Success(data))
             else emit(State.Error(Exception("Could not find vehicle")))

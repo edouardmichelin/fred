@@ -1,7 +1,7 @@
 package com.fred.app.di
 
 import com.fred.app.data.repository.base.ActivityRepository
-import com.fred.app.data.repository.base.GetUserRepository
+import com.fred.app.data.repository.base.UserRepository
 import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.base.LoginRepository
 import com.fred.app.data.repository.base.RegisterUserRepository
@@ -39,11 +39,11 @@ class UseCaseModule {
     @Provides
     fun provideGetUserUseCase(
         authService: AuthService,
-        getUserRepository: GetUserRepository,
+        userRepository: UserRepository,
         vehicleRepository: VehicleRepository,
         activityRepository: ActivityRepository,
         locationRepository: LocationRepository
-    ) = GetUserUseCase(authService, getUserRepository, vehicleRepository, activityRepository, locationRepository)
+    ) = GetUserUseCase(authService, userRepository, vehicleRepository, activityRepository, locationRepository)
 
     @ViewModelScoped
     @Provides
@@ -76,8 +76,10 @@ class UseCaseModule {
     @Provides
     fun provideCreateActivityUseCase(
         authService: AuthService,
+        userRepository: UserRepository,
+        vehicleRepository: VehicleRepository,
         activityRepository: ActivityRepository,
-    ) = CreateActivityUseCase(authService, activityRepository)
+    ) = CreateActivityUseCase(authService, userRepository, vehicleRepository, activityRepository)
 
     @ViewModelScoped
     @Provides

@@ -49,9 +49,22 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToProfile: () -> Unit,
 ) {
-    val suggestions by viewModel.suggestions.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    Log.d("HomeScreen", "Suggestions: $suggestions")
+    val user by viewModel.user.collectAsState()
+    val suggestions by viewModel.suggestions.collectAsState()
+
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            IndeterminateCircularIndicator()
+        }
+        return // Exit early to prevent further UI from rendering
+    }
+
 
     DefaultScaffold(
         topBar = { }
@@ -88,30 +101,23 @@ fun HomeScreen(
             }
 
             ScoreCard(
-                score = 9921,
+                isLoading = user == null,
+                score = user?.score ?: 0,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
 
-            if (isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    IndeterminateCircularIndicator()
-                }
-            } else {
-                CarbonFootprintSuggestions(
-                    suggestions = suggestions,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
+            CarbonFootprintSuggestions(
+                suggestions = suggestions,
+                onCheck = { suggestion ->
+                    viewModel.completeSuggestion(description = suggestion.title, score = suggestion.impact)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            )
 
 
 
@@ -127,7 +133,8 @@ fun HomeScreen(
 @Composable
 fun IndeterminateCircularIndicator() {
     CircularProgressIndicator(
-        modifier = Modifier.width(64.dp)
+        modifier = Modifier
+            .width(64.dp)
             .padding(16.dp),
         color = MaterialTheme.colorScheme.secondary,
         trackColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -168,7 +175,9 @@ fun PersonalizedSuggestions(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun ScoreCard(score: Int, modifier: Modifier = Modifier) {
+fun ScoreCard(isLoading: Boolean, score: Int, modifier: Modifier = Modifier) {
+
+
     val containerColor: Color = if (score > 10000) {
         MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
     } else {
@@ -195,41 +204,52 @@ fun ScoreCard(score: Int, modifier: Modifier = Modifier) {
             contentColor = onContainerColor,
         )
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = "Today, your score is",
-                style = MaterialTheme.typography.headlineSmall,
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                IndeterminateCircularIndicator()
+            }
+        } else {
+            Column(
+                modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = "\t ${score} Freddies",
-                    style = MaterialTheme.typography.headlineLarge,
+                    text = "Today, your score is",
+                    style = MaterialTheme.typography.headlineSmall,
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "\t ${score} Freddies",
+                        style = MaterialTheme.typography.headlineLarge,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Try completing some tasks today to decrease your score!",
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "Try completing some tasks today to decrease your score!",
-                style = MaterialTheme.typography.labelSmall,
-            )
         }
+
     }
 }
 
 
 @Composable
-fun CarbonFootprintSuggestions(suggestions: List<Suggestion>, modifier: Modifier = Modifier) {
-    val suggestion = suggestions.map { it.title }
-    val checkedStates = remember { mutableStateListOf(*Array(suggestion.size) { false }) }
+fun CarbonFootprintSuggestions(suggestions: List<Suggestion>, modifier: Modifier = Modifier, onCheck : (Suggestion) -> Unit = {}) {
+    val checkedStates = remember { mutableStateListOf(*Array(suggestions.size) { false }) }
 
     Box(
         modifier = modifier
@@ -272,19 +292,19 @@ fun CarbonFootprintSuggestions(suggestions: List<Suggestion>, modifier: Modifier
                 )
             }
 
-            suggestion.forEachIndexed { index, s ->
+            suggestions.forEachIndexed { index, s ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            checkedStates[index] = !checkedStates[index]
+                            checkedStates[index] = true
                         }
                         .padding(vertical = 8.dp)
                 ) {
                     Checkbox(
                         checked = checkedStates[index],
-                        onCheckedChange = null,
+                        onCheckedChange = { onCheck(s) },
                         modifier = Modifier.size(32.dp),
                         colors = CheckboxDefaults.colors(
                             checkedColor = MaterialTheme.colorScheme.primary,
@@ -295,12 +315,12 @@ fun CarbonFootprintSuggestions(suggestions: List<Suggestion>, modifier: Modifier
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = s,
+                            text = s.title,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Text(
-                            text = "Score: - 10 Freddies",
+                            text = "Score: -${s.impact} Freddies",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f) // Slightly faded color
                         )
