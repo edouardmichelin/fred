@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @Module
@@ -28,4 +29,8 @@ class FirebaseModule {
   fun provideAuthService(firebaseAuth: FirebaseAuth): AuthService {
     return AuthService(firebaseAuth)
   }
+
+  @Provides
+  @Singleton
+  fun provideOkHttpClient(): OkHttpClient = OkHttpClient()
 }

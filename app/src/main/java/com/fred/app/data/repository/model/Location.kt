@@ -6,5 +6,6 @@ data class Location(
     val latitude: Double = 0.0,
     val longitude: Double = 0.0,
     val ownerId: String = "",
-    val locationType: LocationType = LocationType.Other
+    val locationType: LocationType = LocationType.Other,
+    val country: String = ""
 )

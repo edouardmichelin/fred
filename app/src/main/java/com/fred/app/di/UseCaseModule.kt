@@ -16,6 +16,7 @@ import com.fred.app.domain.usecase.GetUserUseCase
 import com.fred.app.domain.usecase.GetVehiclesUseCase
 import com.fred.app.domain.usecase.LoginUseCase
 import com.fred.app.domain.usecase.RegisterUserUseCase
+import com.fred.app.domain.usecase.SearchLocationUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,6 +53,12 @@ class UseCaseModule {
         authService: AuthService,
         locationRepository: LocationRepository,
     ) = GetLocationsUseCase(authService, locationRepository)
+
+    @ViewModelScoped
+    @Provides
+    fun provideSearchLocationUseCase(
+        locationRepository: LocationRepository,
+    ) = SearchLocationUseCase(locationRepository)
 
     @ViewModelScoped
     @Provides

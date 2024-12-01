@@ -11,8 +11,11 @@ interface LocationRepository {
         latitude: Double,
         longitude: Double,
         ownerId: String,
-        locationType: LocationType
+        locationType: LocationType,
+        country: String,
     ): Flow<State<Location>>
+
+    suspend fun search(query: String): Flow<State<List<Location>>>
 
     suspend fun getAllLocationsOf(userId: String): Flow<State<List<Location>>>
 }

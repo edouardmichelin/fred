@@ -23,6 +23,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import okhttp3.OkHttpClient
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -59,7 +60,8 @@ class RepositoryModule {
     @Provides
     fun provideLocationRepository(
         db: FirebaseFirestore,
-    ): LocationRepository = LocationRepositoryImpl(db)
+        client: OkHttpClient,
+    ): LocationRepository = LocationRepositoryImpl(db, client)
 
     @Provides
     fun provideActivityRepository(

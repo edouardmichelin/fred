@@ -20,7 +20,8 @@ constructor(
       name: String,
       latitude: Double,
       longitude: Double,
-      locationType: LocationType
+      locationType: LocationType,
+      country: String
   ): Flow<State<Location>> {
     return authService.userId?.let {
         locationRepository.createLocation(
@@ -28,7 +29,8 @@ constructor(
             latitude = latitude,
             longitude = longitude,
             ownerId = it,
-            locationType = locationType
+            locationType = locationType,
+            country = country
         )
     } ?: flowOf(State.Error(Exception("")))
   }
