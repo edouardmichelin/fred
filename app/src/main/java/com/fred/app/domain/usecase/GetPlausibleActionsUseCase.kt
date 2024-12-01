@@ -121,8 +121,8 @@ constructor(
   }
 
     private fun isAroundDinerTime(): Boolean {
-        val start = LocalTime.of(11, 30)
-        val end = LocalTime.of(15, 0)
+        val start = LocalTime.of(18, 30)
+        val end = LocalTime.of(21, 30)
 
         val currentTime = LocalTime.now()
 
