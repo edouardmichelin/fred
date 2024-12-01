@@ -33,7 +33,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        // testInstrumentationRunner = "com.github.se.travelpouch.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -88,9 +87,6 @@ android {
         }
     }
 
-    // Robolectric needs to be run only in debug. But its tests are placed in the shared source set (test)
-    // The next lines transfers the src/test/* from shared to the testDebug one
-    //
     // This prevent errors from occurring during unit tests
     sourceSets.getByName("testDebug") {
         val test = sourceSets.getByName("test")
