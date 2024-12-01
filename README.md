@@ -4,9 +4,14 @@
 
 ---
 
+## Authors
+
+- [François Dumoncel](https://github.com/Bozu1206)
+- [Edouard Michelin](https://github.com/edouardmichelin)
+
 ## Context
 
-Fred was developed during the 24-hour LauzHack Hackathon, that took place at the EPFL BC building in November 2024.
+Fred was developed by a **team of two** during the **24-hour** LauzHack hackathon, which took place at the EPFL BC building in November 2024.
 
 ## The app
 
