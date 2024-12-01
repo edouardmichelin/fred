@@ -39,7 +39,7 @@ class SuggestionRepositoryImpl @Inject constructor(
                 })
                 put(JSONObject().apply {
                     put("role", "user")
-                    put("content", "")
+                    put("content", prompt)
                 })
             })
             put("temperature", 0.7)

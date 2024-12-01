@@ -53,6 +53,8 @@ constructor(
                 promptBuilder.append(it.longitude)
             }
 
+            promptBuilder.append("I follow a ${user.diet.name} diet.")
+
             suggestionRepository.get(promptBuilder.toString()).collect {
                 when (it) {
                     is State.Success -> {
