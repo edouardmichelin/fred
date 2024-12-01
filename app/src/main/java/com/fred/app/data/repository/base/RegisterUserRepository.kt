@@ -15,7 +15,7 @@ interface RegisterUserRepository {
       age: Int,
       name: String,
       mail: String,
-      avatarId: Int,
+      avatarId: String,
       gender: Gender,
       address: Location,
       diet: Diet,

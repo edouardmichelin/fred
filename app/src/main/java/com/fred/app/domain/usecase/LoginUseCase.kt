@@ -28,17 +28,3 @@ constructor(
       val authCredential: AuthCredential,
   ) : Inputs
 }
-
-/*
-override suspend fun invoke(input: Input): Flow<FirebaseUser> = flow {
-    try {
-        when (val response = loginRepository.loginWithCredential(input.authCredential)) {
-            is State.Success -> emit(response.data)
-
-            is State.Error -> response
-        }
-    } catch (e: Exception) {
-        State.Error(e)
-    }
-}
-*/

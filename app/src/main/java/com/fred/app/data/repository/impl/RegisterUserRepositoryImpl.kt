@@ -9,15 +9,17 @@ import com.fred.app.data.repository.model.Vehicle
 import com.fred.app.util.Constants.Firestore.USERS
 import com.fred.app.util.State
 import com.google.firebase.firestore.FirebaseFirestore
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
 
-class RegisterUserRepositoryImpl @Inject constructor(
+class RegisterUserRepositoryImpl
+@Inject
+constructor(
     private val db: FirebaseFirestore,
 ) : RegisterUserRepository {
-    private val collection = db.collection(USERS)
+  private val collection = db.collection(USERS)
 
   override suspend fun register(
       id: String,
@@ -25,7 +27,7 @@ class RegisterUserRepositoryImpl @Inject constructor(
       age: Int,
       name: String,
       mail: String,
-      avatarId: Int,
+      avatarId: String,
       gender: Gender,
       address: Location,
       diet: Diet,
@@ -33,10 +35,11 @@ class RegisterUserRepositoryImpl @Inject constructor(
       locations: List<Location>,
       score: Int
   ): Flow<State<User>> = flow {
-      emit(State.Loading)
+    emit(State.Loading)
 
-      try {
-          val user = User(
+    try {
+      val user =
+          User(
               id = id,
               username = username,
               age = age,
@@ -48,18 +51,17 @@ class RegisterUserRepositoryImpl @Inject constructor(
               diet = diet,
               transportations = transportations,
               locations = locations,
-              score = score
-          )
+              score = score)
 
-          collection.document(id).set(user).await()
-          val chatRef = collection.document(id).get().await()
+      collection.document(id).set(user).await()
+      val chatRef = collection.document(id).get().await()
 
-          val data = chatRef.toObject(User::class.java)
+      val data = chatRef.toObject(User::class.java)
 
-          if (data != null) emit(State.Success(data))
-          else emit(State.Error(Exception("Could not find user")))
-      } catch (exception: Exception) {
-          emit(State.Error(exception))
-      }
+      if (data != null) emit(State.Success(data))
+      else emit(State.Error(Exception("Could not find user")))
+    } catch (exception: Exception) {
+      emit(State.Error(exception))
+    }
   }
 }

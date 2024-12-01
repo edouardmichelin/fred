@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.fred.app.R
-import com.fred.app.data.repository.model.User
 import com.fred.app.ui.component.DefaultScaffold
 import com.fred.app.util.Constants.Firebase.CLIENT_ID
 import com.fred.app.util.NavigateTo
@@ -42,69 +41,62 @@ fun LoginScreen(
     navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsState()
+  val state by viewModel.uiState.collectAsState()
 
-    val context = LocalContext.current
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+  val context = LocalContext.current
+  val launcher =
+      rememberLauncherForActivityResult(
+          contract = ActivityResultContracts.StartActivityForResult()) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
             try {
-                val account = task.getResult(ApiException::class.java)!!
-                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                viewModel.loginWithCredential(credential)
-
+              val account = task.getResult(ApiException::class.java)!!
+              val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+              viewModel.loginWithCredential(credential)
             } catch (e: ApiException) {
-                Log.w("LoginScreen", "Google sign in failed", e)
+              Log.w("LoginScreen", "Google sign in failed", e)
             }
-        }
+          }
 
-    DefaultScaffold(loading = state.isLoading) {
-        Column(modifier = Modifier
-            .padding(it)
-            .fillMaxSize(),
-            verticalArrangement = Arrangement.Center) {
-            Button(
-                onClick = {
-                    googleLogin(context, launcher)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp),
-                shape = RoundedCornerShape(6.dp),
-                colors = ButtonDefaults.buttonColors()
-            ) {
+  DefaultScaffold(loading = state.isLoading) {
+    Column(
+        modifier = Modifier.padding(it).fillMaxSize(), verticalArrangement = Arrangement.Center) {
+          Button(
+              onClick = { googleLogin(context, launcher) },
+              modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
+              shape = RoundedCornerShape(6.dp),
+              colors = ButtonDefaults.buttonColors()) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_google_logo),
                     contentDescription = "",
-                    tint = Color.Unspecified
-                )
+                    tint = Color.Unspecified)
                 Text(text = "Sign in with Google", modifier = Modifier.padding(6.dp))
-            }
+              }
         }
-    }
+  }
 
-    if (state.loginState == AuthenticationState.AUTHENTICATED) {
-        Log.d("LoginScreen", "User authenticated")
-        if (state.isUserRegistered) {
-            setUserRegistered()
-            NavigateTo(navigateToHome)
-        } else {
-            NavigateTo(navigateToRegister)
-        }
+  if (state.loginState == AuthenticationState.AUTHENTICATED) {
+    Log.d("LoginScreen", "User authenticated")
+    if (state.isUserRegistered) {
+      setUserRegistered()
+      NavigateTo(navigateToHome)
+    } else {
+      NavigateTo(navigateToRegister)
     }
+  }
 }
 
 private fun googleLogin(
     context: Context,
     launcher: ManagedActivityResultLauncher<Intent, ActivityResult>,
 ) {
-    lateinit var googleSignInClient: GoogleSignInClient
-    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestIdToken(CLIENT_ID)
-        .requestEmail()
-        .build()
+  lateinit var googleSignInClient: GoogleSignInClient
+  val gso =
+      GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+          .requestIdToken(CLIENT_ID)
+          .requestEmail()
+          .build()
 
-    googleSignInClient = GoogleSignIn.getClient(context, gso)
-    val signInIntent = googleSignInClient.signInIntent
-    launcher.launch(signInIntent)
+  googleSignInClient = GoogleSignIn.getClient(context, gso)
+  val signInIntent = googleSignInClient.signInIntent
+  launcher.launch(signInIntent)
 }

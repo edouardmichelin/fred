@@ -8,9 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.fred.app.ui.component.ButtonWithBorder
 import com.fred.app.ui.component.DefaultTextField
 import com.fred.app.ui.component.DefaultToolbar
-import com.fred.app.ui.component.TextSecondary
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -65,7 +62,6 @@ fun RegisterScreen(
                     placeholder = "Username",
                 )
 
-
                 DefaultTextField(
                     modifier = Modifier.padding(vertical = 4.dp),
                     value = state.email,
@@ -79,20 +75,20 @@ fun RegisterScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 )
 
-              /*
-                DefaultTextField(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    value = state.address,
-                    iconVector = Icons.Default.Home,
-                    iconText = "addressIcon",
-                    onValueChange = {
-                      viewModel.triggerEvent(RegisterViewModel.ViewEvent.SetAddress(it))
-                    },
-                    label = "Address",
-                    placeholder = "Address",
-                )
+                /*
+                 DefaultTextField(
+                     modifier = Modifier.padding(vertical = 4.dp),
+                     value = state.address,
+                     iconVector = Icons.Default.Home,
+                     iconText = "addressIcon",
+                     onValueChange = {
+                       viewModel.triggerEvent(RegisterViewModel.ViewEvent.SetAddress(it))
+                     },
+                     label = "Address",
+                     placeholder = "Address",
+                 )
 
-               */
+                */
 
                 GenderSelection()
                 Spacer(modifier = Modifier.height(12.dp))

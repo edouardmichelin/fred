@@ -6,14 +6,14 @@ import com.fred.app.util.State
 import kotlinx.coroutines.flow.Flow
 
 interface ActivityRepository {
-    suspend fun createActivity(
-        type: ActivityType,
-        distance: Float,
-        vehicleId: String,
-        impact: Int,
-        ownerId: String,
-        description: String
-    ): Flow<State<Activity>>
+  suspend fun createActivity(
+      type: ActivityType,
+      distance: Float,
+      vehicleId: String,
+      impact: Int,
+      ownerId: String,
+      description: String
+  ): Flow<State<Activity>>
 
-    suspend fun getAllActivitiesOf(userId: String): Flow<State<List<Activity>>>
+  suspend fun getAllActivitiesOf(userId: String): Flow<State<List<Activity>>>
 }

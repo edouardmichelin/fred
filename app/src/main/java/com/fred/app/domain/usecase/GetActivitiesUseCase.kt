@@ -4,9 +4,9 @@ import com.fred.app.data.repository.base.ActivityRepository
 import com.fred.app.data.repository.model.Activity
 import com.fred.app.domain.sdk.AuthService
 import com.fred.app.util.State
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import javax.inject.Inject
 
 class GetActivitiesUseCase
 @Inject
@@ -16,8 +16,7 @@ constructor(
 ) {
 
   suspend operator fun invoke(): Flow<State<List<Activity>>> {
-    return authService.userId?.let {
-      activityRepository.getAllActivitiesOf(it)
-    } ?: flowOf(State.Error(Exception("")))
+    return authService.userId?.let { activityRepository.getAllActivitiesOf(it) }
+        ?: flowOf(State.Error(Exception("")))
   }
 }

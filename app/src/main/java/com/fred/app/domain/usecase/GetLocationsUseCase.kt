@@ -4,9 +4,9 @@ import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.model.Location
 import com.fred.app.domain.sdk.AuthService
 import com.fred.app.util.State
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import javax.inject.Inject
 
 class GetLocationsUseCase
 @Inject
@@ -16,8 +16,7 @@ constructor(
 ) {
 
   suspend operator fun invoke(): Flow<State<List<Location>>> {
-    return authService.userId?.let {
-      locationRepository.getAllLocationsOf(it)
-    } ?: flowOf(State.Error(Exception("")))
+    return authService.userId?.let { locationRepository.getAllLocationsOf(it) }
+        ?: flowOf(State.Error(Exception("")))
   }
 }

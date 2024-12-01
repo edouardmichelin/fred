@@ -1,6 +1,5 @@
 package com.fred.app.presentation.login
 
-import android.view.View
 import androidx.lifecycle.viewModelScope
 import com.fred.app.base.BaseViewModel
 import com.fred.app.base.IViewEvent
@@ -17,10 +16,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class LoginViewModel
 @Inject
-constructor(
-    private val loginUseCase: LoginUseCase,
-    private val getUserUseCase: GetUserUseCase
-) : BaseViewModel<LoginViewModel.ViewState, LoginViewModel.ViewEvent>() {
+constructor(private val loginUseCase: LoginUseCase, private val getUserUseCase: GetUserUseCase) :
+    BaseViewModel<LoginViewModel.ViewState, LoginViewModel.ViewEvent>() {
 
   fun loginWithCredential(authCredential: AuthCredential) {
     setState { state.copy(isLoading = true) }
@@ -61,7 +58,7 @@ constructor(
           setState { state.copy(isLoading = event.state) }
         }
         is ViewEvent.SetUserRegistered -> {
-          setState { state.copy(isUserRegistered = event.state)}
+          setState { state.copy(isUserRegistered = event.state) }
         }
       }
     }
@@ -69,8 +66,10 @@ constructor(
 
   sealed class ViewEvent : IViewEvent {
     class SetLoading(val state: Boolean) : ViewEvent()
+
     class SetState(val state: AuthenticationState) : ViewEvent()
-    class SetUserRegistered(val state: Boolean): ViewEvent()
+
+    class SetUserRegistered(val state: Boolean) : ViewEvent()
   }
 
   data class ViewState(

@@ -33,120 +33,104 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavGraph(startDestination: String = NavDirections.Login.route) {
-    val navController = rememberAnimatedNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+  val navController = rememberAnimatedNavController()
+  val navBackStackEntry by navController.currentBackStackEntryAsState()
+  val currentRoute = navBackStackEntry?.destination?.route
 
-    var onBoardingFinished = false // Replace with your logic
+  var onBoardingFinished = false // Replace with your logic
 
-    DefaultScaffold(
-        bottomBar = {
-            // Show the BottomNavigationBar only if not on the Splash screen
-            if (onBoardingFinished) {
-                BottomNavigationBar(navController)
-            }
-        },
-    ) { innerPadding ->
-        AnimatedNavHost(
-            navController = navController,
-            startDestination = startDestination,
-            Modifier.padding(innerPadding)
-        ) {
-            composable(NavDirections.Splash.route) {
-                SplashScreen(navController)
-            }
-
-            composable(NavDirections.Personal.route) {
-                PersonalScreen(navController, { _, _, _, _, _-> run {}})
-            }
-
-            composable(NavDirections.Transports.route) {
-                TransportationSurveyScreen(onSubmit = { }, navController)
-            }
-
-            composable(NavDirections.Energy.route) {
-                onBoardingFinished = false
-                EnergyOnboardingScreen(onSubmit = {}, navController)
-            }
-
-            composable(NavDirections.Home.route) {
-                onBoardingFinished = false
-                HomeScreen(
-                    hiltViewModel(),
-                    navigateToProfile = { navController.navigate(route = NavDirections.Profile.route) },
-                )
-            }
-
-            composable(NavDirections.Login.route) {
-                LoginScreen(
-                    hiltViewModel(),
-                    setUserRegistered = { onBoardingFinished = false },
-                    navigateToRegister = {
-                        navController.navigate(
-                            route = NavDirections.Splash.route,
-                            popUpTo = NavDirections.Splash.route
-                        )
-                    },
-                    navigateToHome = {
-                        navController.navigate(
-                            route = NavDirections.Home.route,
-                            popUpTo = NavDirections.Home.route
-                        )
-                    }
-
-                )
-            }
-
-            composable(NavDirections.Register.route) {
-                RegisterScreen(
-                    hiltViewModel(),
-                    navigateToBack = {
-                        navController.popBackStack()
-                    }
-                )
-            }
-
-            composable(NavDirections.Leaderboard.route) { }
-
-            composable(NavDirections.Profile.route) {
-                ProfileScreen(hiltViewModel(), navigateToBack = { navController.popBackStack() })
-            }
+  DefaultScaffold(
+      bottomBar = {
+        // Show the BottomNavigationBar only if not on the Splash screen
+        if (onBoardingFinished) {
+          BottomNavigationBar(navController)
         }
-    }
-}
+      },
+  ) { innerPadding ->
+    AnimatedNavHost(
+        navController = navController,
+        startDestination = startDestination,
+        Modifier.padding(innerPadding)) {
+          composable(NavDirections.Splash.route) { SplashScreen(navController) }
 
+          composable(NavDirections.Personal.route) {
+            PersonalScreen(navController, { _, _, _, _, _ -> run {} })
+          }
+
+          composable(NavDirections.Transports.route) {
+            TransportationSurveyScreen(onSubmit = {}, navController)
+          }
+
+          composable(NavDirections.Energy.route) {
+            onBoardingFinished = false
+            EnergyOnboardingScreen(onSubmit = {}, navController)
+          }
+
+          composable(NavDirections.Home.route) {
+            onBoardingFinished = false
+            HomeScreen(
+                hiltViewModel(),
+                navigateToProfile = { navController.navigate(route = NavDirections.Profile.route) },
+            )
+          }
+
+          composable(NavDirections.Login.route) {
+            LoginScreen(
+                hiltViewModel(),
+                setUserRegistered = { onBoardingFinished = false },
+                navigateToRegister = {
+                  navController.navigate(
+                      route = NavDirections.Splash.route, popUpTo = NavDirections.Splash.route)
+                },
+                navigateToHome = {
+                  navController.navigate(
+                      route = NavDirections.Home.route, popUpTo = NavDirections.Home.route)
+                })
+          }
+
+          composable(NavDirections.Register.route) {
+            RegisterScreen(hiltViewModel(), navigateToBack = { navController.popBackStack() })
+          }
+
+          composable(NavDirections.Leaderboard.route) {}
+
+          composable(NavDirections.Profile.route) {
+            ProfileScreen(hiltViewModel(), navigateToBack = { navController.popBackStack() })
+          }
+        }
+  }
+}
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    val items = listOf(
-        BottomNavItem("Home", Icons.Default.Home, "home"),
-        BottomNavItem("Leaderboard", Icons.Default.StarRate, "leaderboard")
-    )
+  val items =
+      listOf(
+          BottomNavItem("Home", Icons.Default.Home, "home"),
+          BottomNavItem("Leaderboard", Icons.Default.StarRate, "leaderboard"))
 
-    NavigationBar {
-        val currentRoute = currentRoute(navController)
-        items.forEach { item ->
-            NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = item.label) },
-                label = { Text(item.label) },
-                selected = currentRoute == item.route,
-                onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            )
-        }
+  NavigationBar {
+    val currentRoute = currentRoute(navController)
+    items.forEach { item ->
+      NavigationBarItem(
+          icon = { Icon(item.icon, contentDescription = item.label) },
+          label = { Text(item.label) },
+          selected = currentRoute == item.route,
+          onClick = {
+            navController.navigate(item.route) {
+              popUpTo(navController.graph.startDestinationId) { saveState = true }
+              launchSingleTop = true
+              restoreState = true
+            }
+          })
     }
+  }
 }
 
 // Helper to determine current route
 @Composable
 fun currentRoute(navController: NavController): String? {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    return navBackStackEntry?.destination?.route
+  val navBackStackEntry by navController.currentBackStackEntryAsState()
+  return navBackStackEntry?.destination?.route
 }
 
 data class BottomNavItem(val label: String, val icon: ImageVector, val route: String)

@@ -4,10 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.fred.app.base.BaseViewModel
 import com.fred.app.base.IViewEvent
 import com.fred.app.base.IViewState
-import com.fred.app.data.repository.model.Gender
 import com.fred.app.data.repository.model.Location
 import com.fred.app.domain.usecase.RegisterUserUseCase
-import com.fred.app.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -20,8 +18,7 @@ constructor(
 ) : BaseViewModel<RegisterViewModel.ViewState, RegisterViewModel.ViewEvent>() {
 
   fun temp() {
-    viewModelScope.launch {
-    }
+    viewModelScope.launch {}
   }
 
   override fun createInitialState(): ViewState = ViewState()

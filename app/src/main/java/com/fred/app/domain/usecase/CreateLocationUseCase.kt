@@ -5,9 +5,9 @@ import com.fred.app.data.repository.model.Location
 import com.fred.app.data.repository.model.LocationType
 import com.fred.app.domain.sdk.AuthService
 import com.fred.app.util.State
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import javax.inject.Inject
 
 class CreateLocationUseCase
 @Inject
@@ -24,14 +24,13 @@ constructor(
       country: String
   ): Flow<State<Location>> {
     return authService.userId?.let {
-        locationRepository.createLocation(
-            name = name,
-            latitude = latitude,
-            longitude = longitude,
-            ownerId = it,
-            locationType = locationType,
-            country = country
-        )
+      locationRepository.createLocation(
+          name = name,
+          latitude = latitude,
+          longitude = longitude,
+          ownerId = it,
+          locationType = locationType,
+          country = country)
     } ?: flowOf(State.Error(Exception("")))
   }
 }

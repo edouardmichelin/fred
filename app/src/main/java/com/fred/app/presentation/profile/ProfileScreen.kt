@@ -20,7 +20,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.fred.app.data.repository.model.Activity
+import com.fred.app.data.repository.model.Avatar
 import com.fred.app.presentation.home.IndeterminateCircularIndicator
+import java.text.SimpleDateFormat
+import java.util.Date
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -28,50 +31,37 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     navigateToBack: () -> Unit,
 ) {
-    val isLoading by viewModel.isLoading.collectAsState()
-    val user by viewModel.user.collectAsState()
+  val isLoading by viewModel.isLoading.collectAsState()
+  val user by viewModel.user.collectAsState()
 
-    if (isLoading || user == null) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            IndeterminateCircularIndicator()
-        }
-        return
+  if (isLoading || user == null) {
+    Box(modifier = Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
+      IndeterminateCircularIndicator()
     }
+    return
+  }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+  Column(
+      modifier = Modifier.fillMaxSize().padding(16.dp),
+      horizontalAlignment = Alignment.CenterHorizontally) {
         // Avatar and user information
         Image(
-            painter = painterResource(id = user?.avatarId!!),
+            painter = painterResource(id = Avatar.valueOf(user?.avatarId!!).resourceId),
             contentDescription = "User Avatar",
-            modifier = Modifier
-                .size(120.dp)
-                .padding(bottom = 8.dp)
-        )
+            modifier = Modifier.size(120.dp).padding(bottom = 8.dp))
 
         // Username and Score
         Text(
             text = user?.username!!,
             style = MaterialTheme.typography.headlineLarge,
             color = Color(0xFFB78700),
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+            modifier = Modifier.padding(bottom = 8.dp))
 
         Text(
             text = "${user?.score!!}",
             style = MaterialTheme.typography.headlineSmall,
             color = Color(0xFFB78700),
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+            modifier = Modifier.padding(bottom = 8.dp))
 
         // Spacer between user info and activities
         Spacer(modifier = Modifier.height(24.dp))
@@ -81,44 +71,34 @@ fun ProfileScreen(
             text = "Activities",
             style = MaterialTheme.typography.headlineSmall,
             color = Color(0xFFB78700),
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+            modifier = Modifier.padding(bottom = 8.dp))
 
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(user?.activities!!) { activity ->
-                ActivityItem(activity = activity)
-            }
+          items(user?.activities!!) { activity -> ActivityItem(activity = activity) }
         }
-    }
+      }
 }
 
 // A Composable function for individual activity items
+@SuppressLint("SimpleDateFormat")
 @Composable
 fun ActivityItem(activity: Activity) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-            Text(
-                text = activity.description,
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
+  Card(
+      modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+      elevation = CardDefaults.cardElevation(4.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
+          Text(
+              text = activity.description,
+              style = MaterialTheme.typography.bodyMedium,
+              maxLines = 2,
+              overflow = TextOverflow.Ellipsis)
 
-            Spacer(modifier = Modifier.height(4.dp))
+          Spacer(modifier = Modifier.height(4.dp))
 
-            Text(
-                text = "Time: ${activity.timestamp}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+          Text(
+              text = SimpleDateFormat("dd/MM/yyyy").format(Date(activity.timestamp)),
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-    }
+      }
 }
