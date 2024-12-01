@@ -1,9 +1,8 @@
 package com.fred.app.presentation.home
 
-import androidx.compose.foundation.BorderStroke
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,15 +38,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.fred.app.R
 import com.fred.app.ui.component.DefaultScaffold
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
+    viewModel: HomeViewModel = hiltViewModel(),
     navigateToProfile: () -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val suggestions by viewModel.suggestions.collectAsState()
+    Log.d("HomeScreen", "Suggestions: $suggestions")
 
     DefaultScaffold(
         topBar = { }

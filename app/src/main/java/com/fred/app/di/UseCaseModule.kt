@@ -5,6 +5,7 @@ import com.fred.app.data.repository.base.GetUserRepository
 import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.base.LoginRepository
 import com.fred.app.data.repository.base.RegisterUserRepository
+import com.fred.app.data.repository.base.SuggestionRepository
 import com.fred.app.data.repository.base.VehicleRepository
 import com.fred.app.domain.sdk.AuthService
 import com.fred.app.domain.usecase.CreateActivityUseCase
@@ -12,6 +13,7 @@ import com.fred.app.domain.usecase.CreateLocationUseCase
 import com.fred.app.domain.usecase.CreateVehicleUseCase
 import com.fred.app.domain.usecase.GetActivitiesUseCase
 import com.fred.app.domain.usecase.GetLocationsUseCase
+import com.fred.app.domain.usecase.GetSuggestionsUseCase
 import com.fred.app.domain.usecase.GetUserUseCase
 import com.fred.app.domain.usecase.GetVehiclesUseCase
 import com.fred.app.domain.usecase.LoginUseCase
@@ -94,4 +96,12 @@ class UseCaseModule {
         authService: AuthService,
         registerUserRepository: RegisterUserRepository,
     ) = RegisterUserUseCase(authService, registerUserRepository)
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetSuggestionsUseCase(
+        authService: AuthService,
+        activityRepository: ActivityRepository,
+        suggestionRepository: SuggestionRepository,
+    ) = GetSuggestionsUseCase(authService, activityRepository, suggestionRepository)
 }

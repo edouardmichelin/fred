@@ -50,7 +50,6 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.fred.app.R
 import com.fred.app.data.repository.model.Activity
-import com.fred.app.presentation.onboarding.transports.TransportData
 import com.google.android.gms.location.LocationServices
 import java.util.Locale
 

@@ -27,6 +27,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,18 +36,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.fred.app.R
 import com.fred.app.data.repository.model.FuelType
 import com.fred.app.data.repository.model.User
 import com.fred.app.data.repository.model.Vehicle
 import com.fred.app.data.repository.model.VehicleType
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun TransportationSurveyScreen(
     onSubmit: () -> Unit,
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: TransportsViewModel = hiltViewModel()
 ) {
     // States for Car Usage
     var ownsCar by remember { mutableStateOf(false) }
@@ -64,6 +70,23 @@ fun TransportationSurveyScreen(
     // States for Flights
     var flightsTaken by remember { mutableStateOf(0) }
     var flightDistance by remember { mutableStateOf("") }
+
+    var submitted by remember { mutableStateOf(false) }
+
+    val vehicleCount = viewModel.vehicleCount.collectAsState()
+    if (submitted) {
+        viewModel.createdCount.asLiveData().observeForever {
+            if (it == vehicleCount.value) {
+                navController.navigate("energy")
+            }
+        }
+    }
+
+    // plane
+    viewModel.incrementVehicleCount()
+
+    // jambes
+    viewModel.incrementVehicleCount()
 
     Column(
         modifier = Modifier
@@ -107,7 +130,14 @@ fun TransportationSurveyScreen(
             )
             Switch(
                 checked = ownsCar,
-                onCheckedChange = { ownsCar = it }
+                onCheckedChange = {
+                    ownsCar = it
+                    if (it) {
+                        viewModel.incrementVehicleCount()
+                    } else {
+                        viewModel.decrementVehicleCount()
+                    }
+                }
             )
         }
         if (ownsCar) {
@@ -118,9 +148,9 @@ fun TransportationSurveyScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text("Car Type")
+            Text("Car Fuel")
             ChipGroup(
-                options = listOf("Gasoline", "Diesel", "Electric", "Hybrid"),
+                options = FuelType.values().map { it.name },
                 selectedOption = carType,
                 onOptionSelected = { carType = it }
             )
@@ -170,7 +200,14 @@ fun TransportationSurveyScreen(
             )
             Switch(
                 checked = usesPublicTransport,
-                onCheckedChange = { usesPublicTransport = it }
+                onCheckedChange = {
+                    usesPublicTransport = it
+                    if (it) {
+                        viewModel.incrementVehicleCount()
+                    } else {
+                        viewModel.decrementVehicleCount()
+                    }
+                }
             )
         }
         if (usesPublicTransport) {
@@ -178,14 +215,6 @@ fun TransportationSurveyScreen(
             Divider(
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text("Public Transport Type")
-            ChipGroup(
-                options = listOf("Bus", "Train", "Metro", "Other"),
-                selectedOption = publicTransportType,
-                onOptionSelected = { publicTransportType = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -198,6 +227,36 @@ fun TransportationSurveyScreen(
         }
 
         Spacer(modifier = Modifier.height(24.dp))
+
+        // Bike Usage Section
+        Text(
+            text = "Bike Usage",
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Do you use a bike?",
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Switch(
+                checked = usesBike,
+                onCheckedChange = {
+                    usesBike = it
+                    if (it) {
+                        viewModel.incrementVehicleCount()
+                    } else {
+                        viewModel.decrementVehicleCount()
+                    }
+                }
+            )
+        }
+
         Divider(thickness = 2.dp, color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f))
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -208,6 +267,7 @@ fun TransportationSurveyScreen(
             color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         Text("How many flights did you take in the past year?")
         Slider(
             value = flightsTaken.toFloat(),
@@ -228,7 +288,9 @@ fun TransportationSurveyScreen(
                 ">3000 km"
             ),
             selectedOption = flightDistance,
-            onOptionSelected = { flightDistance = it }
+            onOptionSelected = {
+                flightDistance = it
+            }
         )
 
         // Submit Button
@@ -247,59 +309,59 @@ fun TransportationSurveyScreen(
 
             Button(
                 onClick = {
-                    val car = Vehicle(
-                        type = VehicleType.Car,
-                        fuelType = FuelType.valueOf(carType),
-                        age = vehicleAge.toInt(),
-                        km = kilometersDriven.toInt(),
-                        carbonFootprint = 0.0,
-                        ownerId = ""
-                    )
+                    if (ownsCar) {
+                        viewModel.createVehicle(
+                            type = VehicleType.Car,
+                            name = "My Car",
+                            fuelType = FuelType.values().firstOrNull { it.name == carType }
+                                ?: FuelType.Diesel,
+                            age = vehicleAge.toInt(),
+                            km = kilometersDriven.toInt(),
+                            carbonFootprint = 1000.0
+                        )
+                    }
 
-                    val publicTransport = Vehicle(
-                        type = VehicleType.PublicTransport,
-                        fuelType = FuelType.Electric,
-                        age = 0,
-                        km = 8000,
-                        carbonFootprint = 0.0,
-                        ownerId = ""
-                    )
+                    if (usesBike) {
+                        viewModel.createVehicle(
+                            type = VehicleType.Bike,
+                            name = "My Bike",
+                            fuelType = FuelType.Muscle,
+                            age = vehicleAge.toInt(),
+                            km = kilometersDriven.toInt(),
+                            carbonFootprint = 0.0
+                        )
+                    }
 
-                    val walk = Vehicle(
-                        type = VehicleType.Walk,
-                        fuelType = FuelType.Muscle,
-                        age = 0,
-                        km = 0,
-                        carbonFootprint = 0.0,
-                        ownerId = ""
-                    )
+                    if (usesPublicTransport) {
+                        viewModel.createVehicle(
+                            type = VehicleType.PublicTransport,
+                            name = "Public Transport",
+                            fuelType = FuelType.Electric,
+                            age = vehicleAge.toInt(),
+                            km = kilometersDriven.toInt(),
+                            carbonFootprint = 0.0
+                        )
+                    }
 
-                    val bike = Vehicle(
-                        type = VehicleType.Bike,
-                        fuelType = FuelType.Muscle,
-                        age = 0,
-                        km = 0,
-                        carbonFootprint = 0.0,
-                        ownerId = ""
-                    )
-
-                    val flights = Vehicle(
+                    viewModel.createVehicle(
                         type = VehicleType.Plane,
+                        name = "Flight",
                         fuelType = FuelType.Gas,
                         age = 0,
-                        km = flightDistance.toInt(),
-                        carbonFootprint = 0.0,
-                        ownerId = ""
+                        km = 0,
+                        carbonFootprint = 1000.0
                     )
 
-                    val data = listOf(
-                        car,
-                        publicTransport,
-                        walk,
-                        flights
+                    viewModel.createVehicle(
+                        type = VehicleType.Walk,
+                        name = "Legs",
+                        fuelType = FuelType.Muscle,
+                        age = 0,
+                        km = 0,
+                        carbonFootprint = 0.0
                     )
 
-                    // onSubmit(data)
+                    submitted = true
                     navController.navigate("energy")
                 },
                 modifier = Modifier
@@ -352,18 +414,3 @@ fun ChipGroup(
         }
     }
 }
-
-
-data class TransportData(
-    val ownsCar: Boolean,
-    val carType: String,
-    val kilometersDriven: Int,
-    val vehicleAge: Int,
-    val usesPublicTransport: Boolean,
-    val publicTransportType: String,
-    val publicTransportFrequency: String,
-    val usesBike: Boolean,
-    val walkingFrequency: String,
-    val flightsTaken: Int,
-    val flightDistance: String
-)

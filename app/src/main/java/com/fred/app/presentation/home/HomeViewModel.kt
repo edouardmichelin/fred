@@ -1,13 +1,15 @@
 package com.fred.app.presentation.home
 
-import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fred.app.base.BaseViewModel
-import com.fred.app.base.IViewEvent
-import com.fred.app.base.IViewState
-import com.fred.app.data.repository.model.Chat
+import com.fred.app.data.repository.model.ActivityType
+import com.fred.app.data.repository.model.Suggestion
+import com.fred.app.domain.usecase.CreateActivityUseCase
+import com.fred.app.domain.usecase.GetSuggestionsUseCase
 import com.fred.app.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
@@ -15,67 +17,43 @@ import kotlinx.coroutines.launch
 class HomeViewModel
 @Inject
 constructor(
-    //private val getChatsUseCase: GetChatsUseCase,
-) : BaseViewModel<HomeViewModel.ViewState, HomeViewModel.ViewEvent>() {
+    private val getSuggestionsUseCase: GetSuggestionsUseCase,
+    private val createActivityUseCase: CreateActivityUseCase,
+) : ViewModel() {
+  private val _suggestions = MutableStateFlow<List<Suggestion>>(emptyList())
+  val suggestions: StateFlow<List<Suggestion>> = _suggestions
 
   init {
-    //getChats()
+   viewModelScope.launch {
+       createActivityUseCase(
+           type = ActivityType.Travel,
+           distance = 10.0f,
+           timestamp = System.currentTimeMillis(),
+           vehicleId = "1",
+           impact = 100
+       )
+       createActivityUseCase(
+           type = ActivityType.Travel,
+           distance = 15.0f,
+           timestamp = System.currentTimeMillis(),
+           vehicleId = "1",
+           impact = 12
+       )
+   }
+   getSuggestions()
   }
-/*
-  private fun getChats() {
-    triggerEvent(ViewEvent.SetLoading(true))
+
+  private fun getSuggestions() {
     viewModelScope.launch {
-      when (val result = getChatsUseCase.execute(input = null)) {
-        is State.Success -> {
-          val chats = result.data
-          triggerEvent(ViewEvent.SetChats(chats))
+        getSuggestionsUseCase().collect {
+            when (it) {
+            is State.Loading -> {}
+            is State.Error -> _suggestions.value = emptyList()
+            is State.Success -> _suggestions.value = it.data
+          }
         }
-        is State.Error -> {
-          Log.d("TAG", "${result.exception}")
-          result.exception.message?.let { triggerEvent(ViewEvent.SetGetChatsError(it)) }
-        }
-      }
     }
   }
 
- */
 
-  override fun createInitialState(): ViewState = ViewState()
-
-  override fun triggerEvent(event: ViewEvent) {
-    viewModelScope.launch {
-      when (event) {
-        is ViewEvent.SetLoading -> {
-          setState {
-            state.copy(
-                isLoading = event.status,
-            )
-          }
-        }
-        is ViewEvent.SetChats -> {
-          setState {
-            state.copy(isLoading = false, chats = event.chats, isChatsEmpty = event.chats.isEmpty())
-          }
-        }
-        is ViewEvent.SetGetChatsError -> {
-          setState { state.copy(chatsError = event.value) }
-        }
-      }
-    }
-  }
-
-  sealed class ViewEvent : IViewEvent {
-    class SetLoading(val status: Boolean) : ViewEvent()
-
-    class SetGetChatsError(val value: String) : ViewEvent()
-
-    class SetChats(val chats: List<Chat>) : ViewEvent()
-  }
-
-  data class ViewState(
-      val isLoading: Boolean = false,
-      val chatsError: String = "",
-      val isChatsEmpty: Boolean = false,
-      val chats: List<Chat> = emptyList(),
-  ) : IViewState
 }

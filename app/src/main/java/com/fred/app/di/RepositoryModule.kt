@@ -11,12 +11,14 @@ import com.fred.app.data.repository.base.GetUserRepository
 import com.fred.app.data.repository.base.LocationRepository
 import com.fred.app.data.repository.base.LoginRepository
 import com.fred.app.data.repository.base.RegisterUserRepository
+import com.fred.app.data.repository.base.SuggestionRepository
 import com.fred.app.data.repository.base.VehicleRepository
 import com.fred.app.data.repository.impl.ActivityRepositoryImpl
 import com.fred.app.data.repository.impl.GetUserRepositoryImpl
 import com.fred.app.data.repository.impl.LocationRepositoryImpl
 import com.fred.app.data.repository.impl.LoginRepositoryImpl
 import com.fred.app.data.repository.impl.RegisterUserRepositoryImpl
+import com.fred.app.data.repository.impl.SuggestionRepositoryImpl
 import com.fred.app.data.repository.impl.VehicleRepositoryImpl
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -72,4 +74,9 @@ class RepositoryModule {
     fun provideRegisterUserRepository(
         db: FirebaseFirestore,
     ): RegisterUserRepository = RegisterUserRepositoryImpl(db)
+
+    @Provides
+    fun provideSuggestionRepository(
+        client: OkHttpClient,
+    ): SuggestionRepository = SuggestionRepositoryImpl(client)
 }

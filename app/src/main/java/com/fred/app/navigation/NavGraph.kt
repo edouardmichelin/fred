@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fred.app.presentation.home.HomeScreen
 import com.fred.app.presentation.login.LoginScreen
@@ -66,6 +65,7 @@ fun NavGraph(startDestination: String = NavDirections.Login.route) {
             }
 
             composable(NavDirections.Energy.route) {
+                onBoardingFinished = true
                 EnergyOnboardingScreen(onSubmit = {}, navController)
             }
 
