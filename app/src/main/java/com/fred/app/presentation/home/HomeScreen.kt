@@ -24,6 +24,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.fred.app.R
+import com.fred.app.data.repository.model.Suggestion
 import com.fred.app.ui.component.DefaultScaffold
 
 @Composable
@@ -48,17 +50,17 @@ fun HomeScreen(
     navigateToProfile: () -> Unit,
 ) {
     val suggestions by viewModel.suggestions.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     Log.d("HomeScreen", "Suggestions: $suggestions")
 
     DefaultScaffold(
         topBar = { }
     ) { innerPadding ->
-        // Add vertical scrolling capability
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .verticalScroll(rememberScrollState()) // Add scrolling behavior
+                .verticalScroll(rememberScrollState())
         ) {
             Row(
                 modifier = Modifier
@@ -92,11 +94,26 @@ fun HomeScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
-            CarbonFootprintSuggestions(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            )
+
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    IndeterminateCircularIndicator()
+                }
+            } else {
+                CarbonFootprintSuggestions(
+                    suggestions = suggestions,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
+
+
 
             PersonalizedSuggestions(
                 modifier = Modifier
@@ -107,6 +124,15 @@ fun HomeScreen(
     }
 }
 
+@Composable
+fun IndeterminateCircularIndicator() {
+    CircularProgressIndicator(
+        modifier = Modifier.width(64.dp).padding(16.dp),
+        color = MaterialTheme.colorScheme.secondary,
+        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+
+    )
+}
 
 @Composable
 fun PersonalizedSuggestions(modifier: Modifier = Modifier) {
@@ -200,16 +226,9 @@ fun ScoreCard(score: Int, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun CarbonFootprintSuggestions(modifier: Modifier = Modifier) {
-    val suggestions = listOf(
-        "Use public transport or carpool when possible.",
-        "Reduce energy consumption by turning off unused lights.",
-        "Avoid single-use plastics and use reusable items.",
-        "Eat locally-sourced and plant-based meals.",
-        "Recycle and compost your waste whenever possible."
-    )
-
-    val checkedStates = remember { mutableStateListOf(*Array(suggestions.size) { false }) }
+fun CarbonFootprintSuggestions(suggestions: List<Suggestion>, modifier: Modifier = Modifier) {
+    val suggestion = suggestions.map { it.title }
+    val checkedStates = remember { mutableStateListOf(*Array(suggestion.size) { false }) }
 
     Box(
         modifier = modifier
@@ -252,12 +271,12 @@ fun CarbonFootprintSuggestions(modifier: Modifier = Modifier) {
                 )
             }
 
-            suggestions.forEachIndexed { index, suggestion ->
+            suggestion.forEachIndexed { index, s ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { 
+                        .clickable {
                             checkedStates[index] = !checkedStates[index]
                         }
                         .padding(vertical = 8.dp)
@@ -275,7 +294,7 @@ fun CarbonFootprintSuggestions(modifier: Modifier = Modifier) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = suggestion,
+                            text = s,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )

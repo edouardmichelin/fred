@@ -31,7 +31,8 @@ class SuggestionRepositoryImpl @Inject constructor(
             put("messages", JSONArray().apply {
                 put(JSONObject().apply {
                     put("role", "system")
-                    put("content", "You are a helpful assistant.")
+                    put("content", "You are a helpful assistant.  Do not add title. Do not add numbers. " +
+                            "You should help the user to reduce their carbon footprint by proposing 3 actions they can do today!. Answer in three simples lines.")
                 })
                 put(JSONObject().apply {
                     put("role", "user")
@@ -82,15 +83,23 @@ class SuggestionRepositoryImpl @Inject constructor(
             val choice = choices.getJSONObject(i)
             val message = choice.getJSONObject("message")
             val content = message.getString("content")
+                .replace("1.", "")
+                .replace("2.", "")
+                .replace("3.", "")
+
+
+            val sug = content.split("\n")
 
             Log.d("SuggestionRepositoryImpl", "Suggestion: $content")
 
-            suggestions.add(
-                Suggestion(
-                    title = content.trim(), // Assuming each suggestion is a line of text
-                    activity = Activity() // Replace with actual Activity parsing logic if needed
+            for (s in sug) {
+                suggestions.add(
+                    Suggestion(
+                        title = s.trim(), // Assuming each suggestion is a line of text
+                        activity = Activity() // Replace with actual Activity parsing logic if needed
+                    )
                 )
-            )
+            }
         }
 
 

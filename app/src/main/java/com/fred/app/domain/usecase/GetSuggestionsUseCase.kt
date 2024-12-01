@@ -27,7 +27,8 @@ constructor(
             is State.Success -> {
                 Log.d("GetSuggestionsUseCase", "Activities: ${it.data}")
               val activities = it.data
-              val prompt = "Give me suggestions to reduce my carbon footprint"
+              val prompt = "I have done the following activities: " +
+                      "${activities.joinToString { it.type.name }}, "
               suggestionRepository.get(prompt).collect {
                 when (it) {
                   is State.Success -> {

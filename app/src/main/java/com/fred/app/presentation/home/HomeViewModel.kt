@@ -10,6 +10,7 @@ import com.fred.app.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
@@ -23,6 +24,9 @@ constructor(
   private val _suggestions = MutableStateFlow<List<Suggestion>>(emptyList())
   val suggestions: StateFlow<List<Suggestion>> = _suggestions
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading
+
   init {
    viewModelScope.launch {
        createActivityUseCase(
@@ -31,15 +35,17 @@ constructor(
            timestamp = System.currentTimeMillis(),
            vehicleId = "1",
            impact = 100
-       )
+       ).collect()
+
        createActivityUseCase(
            type = ActivityType.Travel,
            distance = 15.0f,
            timestamp = System.currentTimeMillis(),
            vehicleId = "1",
            impact = 12
-       )
+       ).collect()
    }
+
    getSuggestions()
   }
 
@@ -47,9 +53,12 @@ constructor(
     viewModelScope.launch {
         getSuggestionsUseCase().collect {
             when (it) {
-            is State.Loading -> {}
+            is State.Loading -> _isLoading.value = true
             is State.Error -> _suggestions.value = emptyList()
-            is State.Success -> _suggestions.value = it.data
+            is State.Success -> {
+                _suggestions.value = it.data
+                _isLoading.value = false
+            }
           }
         }
     }
