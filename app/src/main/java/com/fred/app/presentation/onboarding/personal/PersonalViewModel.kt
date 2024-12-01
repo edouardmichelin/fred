@@ -21,11 +21,11 @@ class PersonalViewModel @Inject constructor (
     private val _currUser = MutableStateFlow<User?>(null)
     val currentUser: StateFlow<User?> = _currUser
 
-    private fun registerUser(
+    fun registerUser(
         username: String,
         name: String,
         mail: String,
-        avatarId: String,
+        avatarId: Int,
         gender: Gender,
         address: Location,
         diet: Diet

@@ -1,6 +1,9 @@
 package com.fred.app.presentation.onboarding.personal
 
+import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -43,6 +47,10 @@ import com.fred.app.data.repository.model.Diet
 import com.fred.app.data.repository.model.Gender
 import com.fred.app.data.repository.model.Location
 
+
+
+
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PersonalScreen(
@@ -51,15 +59,19 @@ fun PersonalScreen(
     modifier: Modifier = Modifier,
     viewModel: PersonalViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
     var selectedGender by remember { mutableStateOf<Gender?>(null) }
     var selectedDiet by remember { mutableStateOf<Diet?>(null) }
+    var selectedAvatar by remember { mutableStateOf<Avatar?>(null) }
+    var showAvatarDialog by remember { mutableStateOf(false) }
 
     val genderOptions = Gender.values().toList()
     val dietOptions = Diet.values().toList()
+    val avatarOptions = Avatar.values().toList()
 
     Box(
         modifier = Modifier
@@ -91,7 +103,20 @@ fun PersonalScreen(
                 )
             }
 
-            // Input Fields
+            // Avatar Selection
+            Button(
+                onClick = { showAvatarDialog = true },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = selectedAvatar?.name ?: "Choose Avatar",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Name Input Field
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
@@ -101,6 +126,7 @@ fun PersonalScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Other Input Fields
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
@@ -154,6 +180,52 @@ fun PersonalScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Avatar Selection Modal
+            if (showAvatarDialog) {
+                androidx.compose.material3.AlertDialog(
+                    onDismissRequest = { showAvatarDialog = false },
+                    title = {
+                        Text(
+                            text = "Choose Your Avatar",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    },
+                    text = {
+                        Column {
+                            avatarOptions.forEach { avatar ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp)
+                                        .clickable {
+                                            selectedAvatar = avatar
+                                            showAvatarDialog = false
+                                        },
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = avatar.id),
+                                        contentDescription = avatar.name,
+                                        modifier = Modifier.size(48.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(16.dp))
+                                    Text(
+                                        text = avatar.name,
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+                            }
+                        }
+                    },
+                    confirmButton = {
+                        Button(onClick = { showAvatarDialog = false }) {
+                            Text("Close")
+                        }
+                    }
+                )
+            }
 
             Column(
                 modifier = Modifier
@@ -185,61 +257,42 @@ fun PersonalScreen(
                 }
             }
 
-
             // Submit Button
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                }
-
-                Button(
-                    onClick = {
-                        viewModel.registerUser(
-                            username = username,
-                            name = name,
-                            mail = email,
-                            avatarId = Avatar.Cat.id,
-                            gender = selectedGender ?: Gender.Other,
-                            address = Location(),
-                            diet = selectedDiet ?: Diet.Other,
-                        )
-                        navController.navigate("transports")
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        .padding(16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            Spacer(modifier = Modifier.height(32.dp))
+            Button(
+                onClick = {
+                    viewModel.registerUser(
+                        username = username,
+                        name = name,
+                        mail = email,
+                        avatarId = selectedAvatar?.id ?: 0,
+                        gender = selectedGender ?: Gender.Other,
+                        address = Location(),
+                        diet = selectedDiet ?: Diet.Other,
                     )
+                    navController.navigate("transports")
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Next",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
-                            contentDescription = "Next Icon",
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
+                    Text(
+                        text = "Next",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
+                        contentDescription = "Next Icon",
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
             }
-
         }
     }
 }
-

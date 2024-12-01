@@ -1,14 +1,18 @@
 package com.fred.app.data.repository.model
 
-enum class Avatar(val id: String) {
-    Avocado("avatar_avocado.png"),
-    Book("avatar_book.png"),
-    Campfire("avatar_campfire.png"),
-    Deer("avatar_deer.png"),
-    Cat("avatar_cat.png"),
-    Dog("avatar_dog.png"),
-    Globe("avatar_globe.png"),
-    Leaf("avatar_leaf.png"),
-    Stream("avatar_stream.png"),
-    Tree("avatar_tree.png"),
+import android.annotation.SuppressLint
+import android.content.Context
+import com.fred.app.R
+
+enum class Avatar(val id: Int) {
+    Avocado(R.drawable.avatar_avocado),
+    Book(R.drawable.avatar_book),
+    Campfire(R.drawable.avatar_campfire),
+    Deer(R.drawable.avatar_deer),
+    Cat(R.drawable.avatar_cat),
+    Dog(R.drawable.avatar_dog),
+    Globe(R.drawable.avatar_globe),
+    Leaf(R.drawable.avatar_leaf),
+    Stream(R.drawable.avatar_stream),
+    Tree(R.drawable.avatar_tree);
 }

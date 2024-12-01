@@ -24,7 +24,7 @@ class RegisterUserRepositoryImpl @Inject constructor(
       username: String,
       name: String,
       mail: String,
-      avatarId: String,
+      avatarId: Int,
       gender: Gender,
       address: Location,
       diet: Diet,
