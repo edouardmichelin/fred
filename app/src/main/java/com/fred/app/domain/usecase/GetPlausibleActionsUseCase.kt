@@ -63,7 +63,7 @@ constructor(
                   )))
     }
 
-    if (isAroundLunchTime()) {
+    if (isAroundLunchTime() || isAroundDinerTime()) {
       actions.add(
           Suggestion(
               title = "Ordering food?",
