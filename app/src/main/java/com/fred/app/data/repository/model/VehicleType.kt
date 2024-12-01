@@ -4,7 +4,6 @@ enum class VehicleType {
     Walk,
     Bike,
     Car,
-    Bus,
-    Metro,
+    PublicTransport,
     Plane
 }

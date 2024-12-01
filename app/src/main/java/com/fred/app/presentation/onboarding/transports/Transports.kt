@@ -37,10 +37,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.fred.app.R
+import com.fred.app.data.repository.model.FuelType
+import com.fred.app.data.repository.model.User
+import com.fred.app.data.repository.model.Vehicle
+import com.fred.app.data.repository.model.VehicleType
 
 @Composable
 fun TransportationSurveyScreen(
-    onSubmit: (TransportData) -> Unit,
+    onSubmit: () -> Unit,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
@@ -243,20 +247,59 @@ fun TransportationSurveyScreen(
 
             Button(
                 onClick = {
-                    val data = TransportData(
-                        ownsCar = ownsCar,
-                        carType = carType,
-                        kilometersDriven = kilometersDriven.toInt(),
-                        vehicleAge = vehicleAge.toInt(),
-                        usesPublicTransport = usesPublicTransport,
-                        publicTransportType = publicTransportType,
-                        publicTransportFrequency = publicTransportFrequency,
-                        usesBike = usesBike,
-                        walkingFrequency = walkingFrequency,
-                        flightsTaken = flightsTaken,
-                        flightDistance = flightDistance
+                    val car = Vehicle(
+                        type = VehicleType.Car,
+                        fuelType = FuelType.valueOf(carType),
+                        age = vehicleAge.toInt(),
+                        km = kilometersDriven.toInt(),
+                        carbonFootprint = 0.0,
+                        ownerId = ""
                     )
-                    onSubmit(data)
+
+                    val publicTransport = Vehicle(
+                        type = VehicleType.PublicTransport,
+                        fuelType = FuelType.Electric,
+                        age = 0,
+                        km = 8000,
+                        carbonFootprint = 0.0,
+                        ownerId = ""
+                    )
+
+                    val walk = Vehicle(
+                        type = VehicleType.Walk,
+                        fuelType = FuelType.Muscle,
+                        age = 0,
+                        km = 0,
+                        carbonFootprint = 0.0,
+                        ownerId = ""
+                    )
+
+                    val bike = Vehicle(
+                        type = VehicleType.Bike,
+                        fuelType = FuelType.Muscle,
+                        age = 0,
+                        km = 0,
+                        carbonFootprint = 0.0,
+                        ownerId = ""
+                    )
+
+                    val flights = Vehicle(
+                        type = VehicleType.Plane,
+                        fuelType = FuelType.Gas,
+                        age = 0,
+                        km = flightDistance.toInt(),
+                        carbonFootprint = 0.0,
+                        ownerId = ""
+                    )
+
+                    val data = listOf(
+                        car,
+                        publicTransport,
+                        walk,
+                        flights
+                    )
+
+                    // onSubmit(data)
                     navController.navigate("energy")
                 },
                 modifier = Modifier
