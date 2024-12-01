@@ -8,6 +8,7 @@ import com.fred.app.data.repository.model.ActivityType
 import com.fred.app.data.repository.model.Suggestion
 import com.fred.app.data.repository.model.User
 import com.fred.app.domain.usecase.CreateActivityUseCase
+import com.fred.app.domain.usecase.GetPlausibleActionsUseCase
 import com.fred.app.domain.usecase.GetSuggestionsUseCase
 import com.fred.app.domain.usecase.GetUserUseCase
 import com.fred.app.util.State
@@ -26,13 +27,17 @@ class HomeViewModel
 constructor(
     private val getSuggestionsUseCase: GetSuggestionsUseCase,
     private val getUserUseCase: GetUserUseCase,
-    private val createActivityUseCase: CreateActivityUseCase
+    private val createActivityUseCase: CreateActivityUseCase,
+    private val getPlausibleActionsUseCase: GetPlausibleActionsUseCase
 ) : ViewModel() {
     private val _user = MutableStateFlow<User?>(null)
     val user: StateFlow<User?> = _user.asStateFlow()
 
     private val _suggestions = MutableStateFlow<List<Suggestion>>(emptyList())
     val suggestions: StateFlow<List<Suggestion>> = _suggestions
+
+    private val _plausibleActions = MutableStateFlow<List<Suggestion>>(emptyList())
+    val plausibleActions: StateFlow<List<Suggestion>> = _plausibleActions
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading
@@ -42,18 +47,17 @@ constructor(
     }
 
     fun completeSuggestion(
-        description: String,
-        score: Int
+        suggestion: Suggestion
     ) {
         if (_user.value == null) return
 
         viewModelScope.launch {
             createActivityUseCase(
-                type = ActivityType.Suggestion,
-                distance = 0f,
+                type = suggestion.activity.type,
+                distance = suggestion.activity.distance,
                 vehicleId = "0",
-                impact = -score,
-                description = description
+                impact = suggestion.activity.impact,
+                description = suggestion.title
             ).collect {
                 when (it) {
                     is State.Loading -> _user.value = null
@@ -77,6 +81,7 @@ constructor(
                     is State.Success -> {
                         _user.value = it.data
                         getSuggestions()
+                        getPlausibleActions()
                     }
 
                     is State.Error -> _user.value = null
@@ -100,6 +105,25 @@ constructor(
                     is State.Success -> {
                         Log.d("SuggestionRepositoryImpl", "Suggestions: ${it.data}")
                         _suggestions.value = it.data
+                        _isLoading.value = false
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getPlausibleActions() {
+        if (_user.value == null) return
+
+        viewModelScope.launch {
+            getPlausibleActionsUseCase().collect {
+                when (it) {
+                    is State.Loading -> _isLoading.value = true
+                    is State.Error -> {
+                        _plausibleActions.value = emptyList()
+                    }
+                    is State.Success -> {
+                        _plausibleActions.value = it.data
                         _isLoading.value = false
                     }
                 }

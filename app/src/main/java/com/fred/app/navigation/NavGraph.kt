@@ -65,11 +65,12 @@ fun NavGraph(startDestination: String = NavDirections.Login.route) {
             }
 
             composable(NavDirections.Energy.route) {
-                onBoardingFinished = true
+                onBoardingFinished = false
                 EnergyOnboardingScreen(onSubmit = {}, navController)
             }
 
             composable(NavDirections.Home.route) {
+                onBoardingFinished = false
                 HomeScreen(
                     hiltViewModel(),
                     navigateToProfile = { navController.navigate(route = NavDirections.Profile.route) },
@@ -79,7 +80,7 @@ fun NavGraph(startDestination: String = NavDirections.Login.route) {
             composable(NavDirections.Login.route) {
                 LoginScreen(
                     hiltViewModel(),
-                    setUserRegistered = { onBoardingFinished = true },
+                    setUserRegistered = { onBoardingFinished = false },
                     navigateToRegister = {
                         navController.navigate(
                             route = NavDirections.Splash.route,

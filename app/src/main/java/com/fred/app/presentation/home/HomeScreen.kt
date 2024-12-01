@@ -52,6 +52,7 @@ fun HomeScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val user by viewModel.user.collectAsState()
     val suggestions by viewModel.suggestions.collectAsState()
+    val plausibleActions by viewModel.plausibleActions.collectAsState()
 
     if (isLoading) {
         Box(
@@ -110,21 +111,36 @@ fun HomeScreen(
 
 
             CarbonFootprintSuggestions(
+                title = "Today's Green Tips",
+                description = "Here are some simple steps to help reduce your carbon footprint:",
                 suggestions = suggestions,
                 onCheck = { suggestion ->
-                    viewModel.completeSuggestion(description = suggestion.title, score = suggestion.impact)
+                    viewModel.completeSuggestion(suggestion = suggestion)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.2f),
+                        shape = RoundedCornerShape(24.dp)
+                    )
             )
 
 
-
-            PersonalizedSuggestions(
+            CarbonFootprintSuggestions(
+                title = "Actions you may take",
+                description = "Based on your location and the time of the day.",
+                suggestions = plausibleActions,
+                onCheck = { suggestion ->
+                    viewModel.completeSuggestion(suggestion = suggestion)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        shape = RoundedCornerShape(24.dp)
+                    )
             )
         }
     }
@@ -143,7 +159,7 @@ fun IndeterminateCircularIndicator() {
 }
 
 @Composable
-fun PersonalizedSuggestions(modifier: Modifier = Modifier) {
+fun PersonalizedSuggestions(plausibleActions: List<Suggestion>, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
@@ -156,7 +172,7 @@ fun PersonalizedSuggestions(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(16.dp) // Add padding inside the card
         ) {
             Text(
-                text = "Personalized Suggestions",
+                text = "",
                 style = MaterialTheme.typography.headlineSmall,
                 color = Color(0xFFB78700),
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -164,7 +180,7 @@ fun PersonalizedSuggestions(modifier: Modifier = Modifier) {
 
             repeat(1) { // Example suggestions
                 Text(
-                    text = "Based on your location and the hour of the day, we suggest you to take a walk in the park.",
+                    text = "",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color(0xFFB78700)
                 )
@@ -248,16 +264,29 @@ fun ScoreCard(isLoading: Boolean, score: Int, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun CarbonFootprintSuggestions(suggestions: List<Suggestion>, modifier: Modifier = Modifier, onCheck : (Suggestion) -> Unit = {}) {
-    val checkedStates = remember { mutableStateListOf(*Array(suggestions.size) { false }) }
+fun CarbonFootprintSuggestions(title: String, description: String, suggestions: List<Suggestion>, modifier: Modifier = Modifier, onCheck : (Suggestion) -> Unit = {}) {
+    var checkedStates = remember { mutableStateListOf(*Array(suggestions.size) { false }) }
+
+    if (suggestions.isEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            IndeterminateCircularIndicator()
+        }
+        return
+    }
+
+    if (checkedStates.size != suggestions.size) {
+        checkedStates = remember { mutableStateListOf(*Array(suggestions.size) { false }) }
+    }
+
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.2f),
-                shape = RoundedCornerShape(24.dp)
-            )
             .padding(16.dp)
     ) {
         Column {
@@ -268,14 +297,14 @@ fun CarbonFootprintSuggestions(suggestions: List<Suggestion>, modifier: Modifier
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Today's Green Tips",
+                        text = title,
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
 
                     Text(
-                        text = "Here are some simple steps to help reduce your carbon footprint:",
+                        text = description,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -322,7 +351,7 @@ fun CarbonFootprintSuggestions(suggestions: List<Suggestion>, modifier: Modifier
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Text(
-                            text = "Score: -${s.impact} Freddies",
+                            text = "Score: ${s.activity.impact} Freddies",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f) // Slightly faded color
                         )

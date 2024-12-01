@@ -4,6 +4,7 @@ import android.util.Log
 import com.fred.app.BuildConfig
 import com.fred.app.data.repository.base.SuggestionRepository
 import com.fred.app.data.repository.model.Activity
+import com.fred.app.data.repository.model.ActivityType
 import com.fred.app.data.repository.model.Suggestion
 import com.fred.app.util.State
 import kotlinx.coroutines.Dispatchers
@@ -99,7 +100,11 @@ class SuggestionRepositoryImpl @Inject constructor(
                 suggestions.add(
                     Suggestion(
                         title = s.trim(), // Assuming each suggestion is a line of text
-                        activity = Activity() // Replace with actual Activity parsing logic if needed
+                        activity = Activity(
+                            type = ActivityType.Suggestion,
+                            impact = -50,
+                            description = s.trim()
+                        ) // Replace with actual Activity parsing logic if needed
                     )
                 )
             }

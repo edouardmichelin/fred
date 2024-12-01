@@ -13,6 +13,7 @@ import com.fred.app.domain.usecase.CreateLocationUseCase
 import com.fred.app.domain.usecase.CreateVehicleUseCase
 import com.fred.app.domain.usecase.GetActivitiesUseCase
 import com.fred.app.domain.usecase.GetLocationsUseCase
+import com.fred.app.domain.usecase.GetPlausibleActionsUseCase
 import com.fred.app.domain.usecase.GetSuggestionsUseCase
 import com.fred.app.domain.usecase.GetUserUseCase
 import com.fred.app.domain.usecase.GetVehiclesUseCase
@@ -108,4 +109,10 @@ class UseCaseModule {
         authService: AuthService,
         suggestionRepository: SuggestionRepository,
     ) = GetSuggestionsUseCase(authService, suggestionRepository)
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetPlausibleActionsUseCase(
+        authService: AuthService,
+    ) = GetPlausibleActionsUseCase(authService)
 }

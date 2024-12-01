@@ -61,20 +61,20 @@ fun ProfileScreen(
         // Username and Score
         Text(
             text = user?.username!!,
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineLarge,
             color = Color(0xFFB78700),
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Text(
-            text = "Score: ${user?.score!!}",
+            text = "${user?.score!!}",
             style = MaterialTheme.typography.headlineSmall,
             color = Color(0xFFB78700),
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
         // Spacer between user info and activities
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Activities list
         Text(
