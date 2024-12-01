@@ -12,6 +12,7 @@ interface RegisterUserRepository {
   suspend fun register(
       id: String,
       username: String,
+      age: Int,
       name: String,
       mail: String,
       avatarId: Int,

@@ -22,6 +22,7 @@ class RegisterUserRepositoryImpl @Inject constructor(
   override suspend fun register(
       id: String,
       username: String,
+      age: Int,
       name: String,
       mail: String,
       avatarId: Int,
@@ -38,6 +39,7 @@ class RegisterUserRepositoryImpl @Inject constructor(
           val user = User(
               id = id,
               username = username,
+              age = age,
               name = name,
               mail = mail,
               avatarId = avatarId,

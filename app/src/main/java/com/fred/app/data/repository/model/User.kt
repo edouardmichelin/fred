@@ -3,6 +3,7 @@ package com.fred.app.data.repository.model
 data class User(
     val id: String = "",
     val username: String = "",
+    val age: Int = 0,
     val name: String = "",
     val mail: String = "",
     val avatarId: Int = 0,

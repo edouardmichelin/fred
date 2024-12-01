@@ -19,6 +19,7 @@ constructor(
 ) {
   suspend operator fun invoke(
       username: String,
+      age: Int,
       name: String,
       mail: String,
       avatarId: Int,
@@ -31,6 +32,7 @@ constructor(
         registerUserRepository.register(
                 id = it,
                 username = username,
+                age = age,
                 name = name,
                 mail = mail,
                 avatarId = avatarId,
